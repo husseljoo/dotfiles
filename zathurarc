@@ -1,0 +1,11 @@
+set selection-clipboard clipboard
+map <C--> zoom out
+map <S--> zoom out
+map <C-+> zoom in
+
+/* map J zoom out */
+/* map K zoom in */
+
+
+map <C-j> zoom out
+map <C-k> zoom in

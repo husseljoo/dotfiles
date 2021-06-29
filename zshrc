@@ -114,11 +114,11 @@ usableTerminal(){
 usableTerminal2(){
   # arg1=$1alias 
    $1 &disown}
-alias go=usableTerminal
+alias go=usableTerminal2
 
 alias clip='xclip -selection clipboard'
 
-alias hostRefresh='sudo vmhgfs-fuse .host:/ /mnt/hgfs/ -o allow_other -o uid=1000'
+alias hostRefresh='sudo vmhgfs-fuse .hot:/ /mnt/hgfs/ -o allow_other -o uid=1000'
 alias host='cd /mnt/hgfs'
 alias chrome='go google-chrome'
 
@@ -146,6 +146,7 @@ alias books='cd /mnt/hgfs/C/Users/hussi/OneDrive/Desktop/UNIVERSITY/BOOKS'
 alias obsidian='go ~/applmages/obsidian/Obsidian-0.12.3.AppImage'
 
 alias yt='python3 ~/pythonTraining/youtubeSearch.py'
+alias s='python3 ~/pythonTraining/webSearch.py'
 
 alias packettracer='/usr/local/bin/packettracer'
 
@@ -169,3 +170,48 @@ alias h='cd ~'
 
 alias sendKindle="python3 ~/pythonTraining/mail/kindleMail.py"
 alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+
+# added by Anaconda3 5.3.1 installer
+# >>> conda init >>>
+# !! Contents within this block are managed by 'conda init' !!
+# __conda_setup="$(CONDA_REPORT_ERRORS=false '/home/husseljo/anaconda3/bin/conda' shell.bash hook 2> /dev/null)"
+# if [ $? -eq 0 ]; then
+#     \eval "$__conda_setup"
+# else
+#     if [ -f "/home/husseljo/anaconda3/etc/profile.d/conda.sh" ]; then
+#         . "/home/husseljo/anaconda3/etc/profile.d/conda.sh"
+#         CONDA_CHANGEPS1=false conda activate base
+#     else
+#         \export PATH="/home/husseljo/anaconda3/bin:$PATH"
+#     fi
+# fi
+# unset __conda_setup
+# <<< conda init <<<
+alias jupyter="/home/husseljo/anaconda3/bin/jupyter-notebook"
+alias eclipse="/home/husseljo/eclipse/java-2021-033/eclipse/eclipse"
+alias python="python3"
+alias py="python3"
+alias downloads="cd ~/Downloads"
+alias ipython='/home/husseljo/anaconda3/bin/ipython3'
+alias ipy='/home/husseljo/anaconda3/bin/ipython3'
+
+alias cms='/home/husseljo/pythonTraining/uniOptimizations/cms-downloader/main.py'
+alias xmobarRestart'=xmonad --recompile; killall xmobar; xmonad --restart'
+
+zath(){
+  zathura $1 & disown}
+
+alias za=zath
+# alias newplugvim="git clone $1 ~/tulu"
+
+# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+alias postgres="sudo -i -u postgres"
+
+queryShot(){
+		DATE=$(date +%d-%H:%M:%S)
+		gnome-screenshot -f ~/uniProjects/db_project2/Query-$DATE.png
+}
+
+alias queryScreen=queryShot
+
