@@ -144,7 +144,7 @@ colorscheme gruvbox
 " colorscheme base16-monokai
 " colorscheme base16-default-dark
 " colorscheme base16-default-dark
-set background=light
+set background=dark
 
 " Lightline
 let g:lightline = {
