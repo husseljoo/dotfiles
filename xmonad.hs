@@ -17,6 +17,7 @@ import XMonad.Hooks.ManageDocks
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
+import XMonad.Hooks.SetWMName
 
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
@@ -66,8 +67,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ 
 	--run applications
 	((modm, xK_i), spawn "bash ~/uniProjects/db_project2/queryShot.sh")
-	 
-	,((modm, xK_f), spawn "firefox")
+	, 
+	((modm, xK_r), spawn "ranger")
+	, 
+	((modm, xK_f), spawn "firefox")
 
     -- launch a terminal
 	, ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
@@ -127,7 +130,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
 
     -- Toggle the status bar gap
-    -- Use this binding wit avoidStruts from Hooks.ManageDocks.
+    -- Use this binding with avoidStruts from Hooks.ManageDocks.
     -- See also the statusBar function from Hooks.DynamicLog.
     --
     -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
@@ -258,6 +261,7 @@ myLogHook = return ()
 myStartupHook = do 
 		spawnOnce "nitrogen --restore &"
 		spawnOnce "compton &"
+		setWMName "LG3D"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
@@ -347,5 +351,4 @@ help = unlines ["The default modifier key is 'alt'. Default keybindings:",
     "mod-button1  Set the window to floating mode and move by dragging",
     "mod-button2  Raise the window to the top of the stack",
     "mod-button3  Set the window to floating mode and resize by dragging"]
-
 
