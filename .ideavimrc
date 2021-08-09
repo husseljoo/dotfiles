@@ -1,0 +1,45 @@
+syntax on
+syntax enable
+filetype plugin indent on
+highlight HighlightedyankRegion cterm=reverse gui=reverse
+
+set autoindent 
+set tabstop=4
+set number
+set nobackup
+set nowritebackup
+set nocompatible
+set ignorecase
+set smartcase
+set shortmess+=I
+set relativenumber
+set number
+set laststatus=2
+set backspace=indent,eol,start
+set hidden
+set incsearch
+set noerrorbells visualbell t_vb=
+set mouse+=a "enable mouse support
+set noswapfile
+set nobackup
+set undodir=~/.vim/undodir
+set noerrorbells visualbell t_vb=
+set shellcmdflag=-ict
+let $BASH_ENV="~/.vim/vim_bash"
+
+" Quick-save
+nmap <leader>w :w<CR>
+
+nmap Q <Nop>
+nmap gccj <Nop>
+nmap gcck <Nop>
+
+
+" copy to clipboard with ctrl+c
+map <C-c> "+y
+map <C-a> ggVG
+
+nmap <C-j> <ESC>
+inoremap <C-j> <ESC>
+vnoremap <C-j> <ESC>
+nnoremap <C-j> <ESC>
