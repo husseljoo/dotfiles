@@ -19,6 +19,8 @@ import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 import XMonad.Hooks.SetWMName
 
+import Graphics.X11.ExtraTypes.XF86
+
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
 --
@@ -65,12 +67,17 @@ myFocusedBorderColor = "#ff0000"
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     [ 
+	--manage audio
+  	  ((xK_q, xF86XK_AudioMute), spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
+  	, ((0, xF86XK_AudioLowerVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ -10%")
+  	, ((0, xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ +10%")
+
+
 	--run applications
-	((modm, xK_i), spawn "bash ~/uniProjects/db_project2/queryShot.sh")
 	, 
 	((modm, xK_r), spawn "ranger")
 	, 
-	((modm, xK_f), spawn "firefox")
+	((modm, xK_f), spawn "firefox-developer-edition")
 
     -- launch a terminal
 	, ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
@@ -269,7 +276,7 @@ myStartupHook = do
 -- Run xmonad with the settings you specify. No need to modify this.
 --
 main = do
- -- xmproc <-spawnPipe "xmobar -x 0 /home/husseljo/.config/xmobar/xmobar.config"
+-- xmproc <-spawnPipe "xmobar -x 0 /home/husseljo/.config/xmobar/xmobar.config"
  xmonad $ docks defaults
 
 -- A structure containing your configuration settings, overriding
