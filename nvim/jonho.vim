@@ -1,10 +1,6 @@
-" copy to clipboard with ctrl+c
-map <C-c> "+y
-
 " Fish doesn't play all that well with others
 set shell=/bin/bash
 let mapleader = "\<Space>"
-" /bin/bash: line 1: xsel: command not found
 
 " =============================================================================
 " # PLUGINS
@@ -15,14 +11,13 @@ filetype off
 " set rtp+=~/dev/others/base16/templates/vim/
 call plug#begin()
 
-Plug 'tpope/vim-commentary'
-Plug 'morhetz/gruvbox'
+Plug 'chriskempson/base16-vim'
 
 " Load plugins
 " VIM enhancements
 Plug 'ciaranm/securemodelines'
 Plug 'editorconfig/editorconfig-vim'
-"Plug 'justinmk/vim-sneak'
+Plug 'justinmk/vim-sneak'
 
 " GUI enhancements
 Plug 'itchyny/lightline.vim'
@@ -35,7 +30,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 " Semantic language support
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/lsp_extensions.nvim'
 Plug 'nvim-lua/completion-nvim'
@@ -46,11 +41,14 @@ Plug 'stephpy/vim-yaml'
 Plug 'rust-lang/rust.vim'
 Plug 'rhysd/vim-clang-format'
 "Plug 'fatih/vim-go'
-Plug 'dag/vim-fish'
+" Plug 'dag/vim-fish'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 
 call plug#end()
+
+"copy to clipboard
+"map <C-c> "+y
 
 if has('nvim')
     set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
@@ -67,13 +65,15 @@ if (match($TERM, "-256color") != -1) && (match($TERM, "screen-256color") == -1)
   set termguicolors
 endif
 set background=dark
-let base16colorspace=256
-" let g:base16_shell_path="~/dev/others/base16/templates/shell/scripts/"
-" colorscheme base16-gruvbox-dark-hard
+"let base16colorspace=256
+"let g:base16_shell_path="~/dev/others/base16/templates/shell/scripts/"
+"let g:base16_shell_path="/home/husseljo/.vim/autoload/base16-vim/colors"
+colorscheme base16-gruvbox-dark-hard
+"colorscheme base16-metal-dark-funeral
 syntax on
 hi Normal ctermbg=NONE
 " Brighter comments
-" call Base16hi("Comment", g:base16_gui09, "", g:base16_cterm09, "", "", "")
+"call Base16hi("Comment", g:base16_gui09, "", g:base16_cterm09, "", "", "")
 " https://github.com/nvim-lua/lsp_extensions.nvim/issues/21
 " call Base16hi("CocHintSign", g:base16_gui03, "", g:base16_cterm03, "", "", "")
 
@@ -110,7 +110,7 @@ local on_attach = function(client, bufnr)
   require'completion'.on_attach(client)
 end
 
-local servers = { "rust_analyzer", "pyright" }
+local servers = { "rust_analyzer" }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     on_attach = on_attach,
@@ -124,7 +124,7 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
     virtual_text = true,
     signs = true,
-    update_in_insert = tre,
+    update_in_insert = tue,
   }
 )
 END
@@ -301,7 +301,7 @@ set diffopt+=iwhite " No whitespace in vimdiff
 " Make diffing better: https://vimways.org/2018/the-power-of-diff/
 set diffopt+=algorithm:patience
 set diffopt+=indent-heuristic
-" set colorcolumn=80 " and give me a colored column
+set colorcolumn=80 " and give me a colored column
 set showcmd " Show (partial) command in status line.
 set mouse=a " Enable mouse usage (all modes) in terminals
 set shortmess+=c " don't give |ins-completion-menu| messages.
@@ -360,7 +360,7 @@ noremap <leader>p :read !xsel --clipboard --output<cr>
 noremap <leader>c :w !xsel -ib<cr><cr>
 
 " <leader>s for Rg search
-" noremap <leader>s :Rg
+noremap <leader>s :Rg
 let g:fzf_layout = { 'down': '~20%' }
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
@@ -385,8 +385,8 @@ nnoremap <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
 " No arrow keys --- force yourself to use the home row
 nnoremap <up> <nop>
 nnoremap <down> <nop>
-" inoremap <up> <nop>
-" inoremap <down> <nop>
+inoremap <up> <nop>
+inoremap <down> <nop>
 inoremap <left> <nop>
 inoremap <right> <nop>
 
@@ -426,7 +426,7 @@ nnoremap <leader>, :set invlist<cr>
 nnoremap <leader>q g<c-g>
 
 " Keymap for replacing up to next _ or -
-" noremap <leader>m ct_
+noremap <leader>m ct_
 
 " I can type :help on my own, thanks.
 map <F1> <Esc>
@@ -473,43 +473,3 @@ autocmd Filetype html,xml,xsl,php source ~/.config/nvim/scripts/closetag.vim
 if has('nvim')
 	runtime! plugin/python_setup.vim
 endif
-
-" let g:gruvbox_contrast_dark = 'hard'
-" if exists('+termguicolors')
-"     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-"     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-" endif
-" let g:gruvbox_invert_selection='0'
-" set background=dark
-" hl PmenuSel guifg=Red ctermfg=Red
-" hghtighlight Visual cterm=NONE ctermbg=76 ctermfg=16 gui=NONE guibg=#5fd700 guifg=#000000
-" highlight StatusLine cterm=NONE ctermbg=231 ctermfg=160 gui=NONE guibg=#ffffff guifg=#d70000
-" highlight Normal cterm=NONE ctermbg=17 gui=NONE guibg=#00005f
-" highlight NonText cterm=NONE ctermbg=17 gui=NONE guibg=#00005f
-
-" highlight Pmenu ctermbg=gray guibg=gray
-" highlight Pmenu cterm=NONE ctermbg=17 gui=NONE guibg=#00005f
-
-"Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
-"If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
-"(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
-
-if (empty($TMUX))
-  if (has("nvim"))
-    "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
-    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-  endif
-  "For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
-  "Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
-  " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
-  if (has("termguicolors"))
-    set termguicolors
-  endif
-endif
-
-
-let g:gruvbox_contrast_dark = 'hard'
-colorscheme gruvbox
-"colorscheme base16-gruvbox-dark-hard
-highlight LspDiagnosticsVirtualTextError guifg=Red ctermfg=Red
-
