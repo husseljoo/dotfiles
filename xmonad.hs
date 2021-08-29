@@ -6,7 +6,6 @@
 --
 -- Normally, you'd only override those defaults you care about.
 --
-
 import XMonad
 import Data.Monoid
 import System.Exit
@@ -67,14 +66,18 @@ myFocusedBorderColor = "#ff0000"
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     [ 
+
 	--manage audio
-  	  ((xK_q, xF86XK_AudioMute), spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
+  	((0, xF86XK_AudioMute), spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
   	, ((0, xF86XK_AudioLowerVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ -10%")
   	, ((0, xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ +10%")
-
-
+	
+	--manage brightness
+	, ((0, xF86XK_MonBrightnessUp), spawn "lux -a 10%")
+    , ((0, xF86XK_MonBrightnessDown), spawn "lux -s 10%")
 	--run applications
-	, 
+	 , 
+
 	((modm, xK_r), spawn "ranger")
 	, 
 	((modm, xK_f), spawn "firefox-developer-edition")
