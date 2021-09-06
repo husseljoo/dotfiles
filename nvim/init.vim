@@ -49,8 +49,46 @@ Plug 'rhysd/vim-clang-format'
 Plug 'dag/vim-fish'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
+Plug 'lervag/vimtex'
+
+Plug 'preservim/nerdtree'
+Plug 'kabouzeid/nvim-lspinstall'
+
+Plug 'pangloss/vim-javascript'
+Plug 'tomasiser/vim-code-dark'
 
 call plug#end()
+
+nnoremap <Leader><space> :noh<CR>
+
+nmap <C-_> gcc 
+inoremap <C-_> gcc 
+vnoremap <C-_> gcc 
+nnoremap <C-_> gcc 
+
+map <C-a> ggVG
+
+
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+nnoremap <C-n> :NERDTree<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <C-f> :NERDTreeFind<CR>
+
+
+"experimenting with Latex
+map <F5> :w \| :! pdflatex %<CR><CR>
+map <F6> :w \| :! zathura $(echo % \| sed 's/tex$/pdf/') & disown <CR>
+
+
+nnoremap \<Space> :noh<CR>
+nnoremap <F9> :!%:p<CR>
+nnoremap <leader>r :!%:p<CR>
+
+let g:tex_flavor='latex'
+let g:vimtex_view_method='zathura'
+let g:vimtex_quickfix_mode=0
+set conceallevel=1
+let g:tex_conceal='abdmg'
 
 if has('nvim')
     set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
@@ -110,7 +148,7 @@ local on_attach = function(client, bufnr)
   require'completion'.on_attach(client)
 end
 
-local servers = { "rust_analyzer", "pyright" }
+local servers = { "rust_analyzer", "pyright", "tsserver", "sqls"}
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
     on_attach = on_attach,
@@ -313,8 +351,6 @@ set listchars=nbsp:¬,extends:»,precedes:«,trail:•
 " =============================================================================
 " # Keyboard shortcuts
 " =============================================================================
-" ; as :
-nnoremap ; :
 
 " Ctrl+j and Ctrl+k as Esc
 " Ctrl-j is a little awkward unfortunately:
@@ -508,8 +544,19 @@ if (empty($TMUX))
 endif
 
 
-let g:gruvbox_contrast_dark = 'hard'
-colorscheme gruvbox
+" let g:gruvbox_contrast_dark = 'hard'
+"colorscheme gruvbox
+colorscheme codedark
+let g:airline_theme = 'codedark'
+
 "colorscheme base16-gruvbox-dark-hard
 highlight LspDiagnosticsVirtualTextError guifg=Red ctermfg=Red
+highlight LspDiagnosticsVirtualTextWarning guifg=Yellow ctermfg=Yellow
+" highlight LspDiagnosticsVirtualTextHint guifg=Blue ctermfg=Blue
+"find visually selected word in file // then n normally
+vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 
+
+autocmd FileType javascript nnoremap <F9> :w<Enter> :! node %<Enter>
+autocmd FileType python nnoremap <F9> :w<Enter> :! python %<Enter>
+autocmd FileType rust nnoremap <F9> :w<Enter> :! cargo run<Enter>
