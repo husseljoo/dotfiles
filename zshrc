@@ -1,75 +1,19 @@
+#gruvbox colors
+source "$HOME/.config/nvim/plugged/gruvbox/gruvbox_256palette.sh"
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
+#export PATH=/some/new/path:$PATH
+export PATH=$HOME/.local/bin::$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/husseljo/.oh-my-zsh"
+export ZSH="/usr/share/oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="zsh-multiline/multiline"
-
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# Caution: this setting can cause issues with multiline prompts (zsh 5.7.1 and newer seem to work)
-# See https://github.com/ohmyzsh/ohmyzsh/issues/5765
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
 plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
@@ -104,23 +48,13 @@ source $ZSH/oh-my-zsh.sh
 #/home/husseljo/c_training/matrix2 $USER
 #echo Hello $USER #Alternative for above compiled C program
 
+alias ff= "fzf --preview \' bat --style=numbers --color=always --line-range :500 {}\'"
 alias idea='intellij-idea-community'
-
-usableTerminal(){
-  # arg1=$1alias 
-  nohup $1 &> /dev/null &}
-
-
-usableTerminal2(){
-  # arg1=$1alias 
-   $1 &disown}
-alias go=usableTerminal2
 
 alias clip='xclip -selection clipboard'
 
 alias hostRefresh='sudo vmhgfs-fuse .hot:/ /mnt/hgfs/ -o allow_other -o uid=1000'
 alias host='cd /mnt/hgfs'
-alias chrome='go google-chrome'
 
 
 #runs Cpp file
@@ -139,18 +73,16 @@ runC(){
 alias compileCpp=runCpp
 alias compileC=runC
 
-alias uni='cd /mnt/hgfs/C/Users/hussi/OneDrive/Desktop/UNIVERSITY'
-alias books='cd /mnt/hgfs/C/Users/hussi/OneDrive/Desktop/UNIVERSITY/BOOKS'
-#alias bro='git log --all --graph --decorate'
+alias windows='ranger /mnt/windows10/Users/hussi/OneDrive/Desktop/'
+alias books='cd /mnt/windows10/Users/hussi/OneDrive/Desktop/UNIVERSITY/BOOKS'
+# alias books='cd /mnt/hgfs/C/Users/hussi/OneDrive/Desktop/UNIVERSITY/BOOKS'
+alias bro='git log --all --graph --decorate'
 
-alias obsidian='go ~/applmages/obsidian/Obsidian-0.12.3.AppImage'
+# alias yt='python3 ~/pythonTraining/youtubeSearch.py'
+# alias s='python3 ~/pythonTraining/webSearch.py'
+# alias packettracer='/usr/local/bin/packettracer'
+# alias uniCourse='python3 ~/pythonTraining/uniOptimizations/openCourses.py'
 
-alias yt='python3 ~/pythonTraining/youtubeSearch.py'
-alias s='python3 ~/pythonTraining/webSearch.py'
-
-alias packettracer='/usr/local/bin/packettracer'
-
-alias uniCourse='python3 ~/pythonTraining/uniOptimizations/openCourses.py'
 alias vim='nvim'
 
 LIGHT_COLOR='base16-gruvbox-light-hard.yml'
@@ -164,7 +96,8 @@ alias ls='ls --color=auto --group-directories-first'
 #alias ls='lsd --color=auto -group-dirs first'
 alias ll='lsd -alh'
 
-alias cat='batcat'
+# alias cat='batcat'
+alias cat='bat'
 
 alias h='cd ~'
 
@@ -192,11 +125,12 @@ alias eclipse="/home/husseljo/eclipse/java-2021-033/eclipse/eclipse"
 alias python="python3"
 alias py="python3"
 alias downloads="cd ~/Downloads"
-alias ipython='/home/husseljo/anaconda3/bin/ipython3'
-alias ipy='/home/husseljo/anaconda3/bin/ipython3'
+alias ipython='/usr/bin/ipython3'
+alias ipy='/usr/bin/ipython3'
 
 alias cms='/home/husseljo/pythonTraining/uniOptimizations/cms-downloader/main.py'
 alias xmobarRestart'=xmonad --recompile; killall xmobar; xmonad --restart'
+alias rustBook='firefox-developer-edition ~/rustBook/book/index.html'
 
 zath(){
   zathura $1 & disown}
@@ -208,10 +142,137 @@ alias za=zath
 
 alias postgres="sudo -i -u postgres"
 
-queryShot(){
-		DATE=$(date +%d-%H:%M:%S)
-		gnome-screenshot -f ~/uniProjects/db_project2/Query-$DATE.png
-}
 
-alias queryScreen=queryShot
 
+# ---------------------------------------------------
+
+# Path to your oh-my-zsh installation.
+#ZSH=/usr/share/oh-my-zsh/
+#
+#export DEFAULT_USER="fernando"
+#export TERM="xterm-256color"
+#export ZSH=/usr/share/oh-my-zsh
+#
+#ZSH_THEME="powerlevel9k/powerlevel9k"
+#POWERLEVEL9K_MODE="nerdfont-complete"
+#source $ZSH/themes/powerlevel9k/powerlevel9k.zsh-theme
+#
+#POWERLEVEL9K_FOLDER_ICON=""
+#POWERLEVEL9K_HOME_SUB_ICON="$(print_icon "HOME_ICON")"
+#POWERLEVEL9K_DIR_PATH_SEPARATOR=" $(print_icon "LEFT_SUBSEGMENT_SEPARATOR") "
+#
+#POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD=0
+#
+#POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER=true
+#
+#POWERLEVEL9K_BACKGROUND_JOBS_FOREGROUND='black'
+#POWERLEVEL9K_BACKGROUND_JOBS_BACKGROUND='178'
+#POWERLEVEL9K_NVM_BACKGROUND="238"
+#POWERLEVEL9K_NVM_FOREGROUND="green"
+#POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND="blue"
+#POWERLEVEL9K_DIR_WRITABLE_FORBIDDEN_FOREGROUND="015"
+#
+#POWERLEVEL9K_TIME_BACKGROUND='255'
+##POWERLEVEL9K_COMMAND_TIME_FOREGROUND='gray'
+#POWERLEVEL9K_COMMAND_EXECUTION_TIME_BACKGROUND='245'
+#POWERLEVEL9K_COMMAND_EXECUTION_TIME_FOREGROUND='black'
+#
+#POWERLEVEL9K_TIME_FORMAT="%D{%H:%M}"
+#POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(root_indicator context dir dir_writable vcs)
+#POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status background_jobs command_execution_time time)
+#POWERLEVEL9K_SHOW_CHANGESET=true
+#
+#HYPHEN_INSENSITIVE="true"
+#COMPLETION_WAITING_DOTS="true"
+## /!\ do not use with zsh-autosuggestions
+#
+#plugins=(archlinux 
+#	asdf 
+#	bundler 
+#	docker 
+#	jsontools 
+#	vscode 
+#	web-search 
+#	k 
+#	tig 
+#	gitfast 
+#	colored-man-pages 
+#	colorize 
+#	command-not-found 
+#	cp 
+#	dirhistory 
+#	autojump 
+#	sudo 
+#	zsh-syntax-highlighting)
+## /!\ zsh-syntax-highlighting and then zsh-autosuggestions must be at the end
+#
+#source $ZSH/oh-my-zsh.sh
+#
+#ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
+#typeset -gA ZSH_HIGHLIGHT_STYLES
+#ZSH_HIGHLIGHT_STYLES[cursor]='bold'
+#
+#ZSH_HIGHLIGHT_STYLES[alias]='fg=green,bold'
+#ZSH_HIGHLIGHT_STYLES[suffix-alias]='fg=green,bold'
+#ZSH_HIGHLIGHT_STYLES[builtin]='fg=green,bold'
+#ZSH_HIGHLIGHT_STYLES[function]='fg=green,bold'
+#ZSH_HIGHLIGHT_STYLES[command]='fg=green,bold'
+#ZSH_HIGHLIGHT_STYLES[precommand]='fg=green,bold'
+#ZSH_HIGHLIGHT_STYLES[hashed-command]='fg=green,bold'
+#
+#rule () {
+#	print -Pn '%F{blue}'
+#	local columns=$(tput cols)
+#	for ((i=1; i<=columns; i++)); do
+#	   printf "\u2588"
+#	done
+#	print -P '%f'
+#}
+#
+#function _my_clear() {
+#	echo
+#	rule
+#	zle clear-screen
+#}
+#zle -N _my_clear
+#bindkey '^l' _my_clear
+#
+## Ctrl-O opens zsh at the current location, and on exit, cd into ranger's last location.
+#ranger-cd() {
+#	tempfile=$(mktemp)
+#	ranger --choosedir="$tempfile" "${@:-$(pwd)}" < $TTY
+#	test -f "$tempfile" &&
+#	if [ "$(cat -- "$tempfile")" != "$(echo -n `pwd`)" ]; then
+#	cd -- "$(cat "$tempfile")"
+#	fi
+#	rm -f -- "$tempfile"
+#	# hacky way of transferring over previous command and updating the screen
+#	VISUAL=true zle edit-command-line
+#}
+#zle -N ranger-cd
+#bindkey '^o' ranger-cd
+#
+## Uncomment the following line to disable bi-weekly auto-update checks.
+#DISABLE_AUTO_UPDATE="true"
+#
+#ZSH_CACHE_DIR=$HOME/.cache/oh-my-zsh
+#if [[ ! -d $ZSH_CACHE_DIR ]]; then
+#  mkdir $ZSH_CACHE_DIR
+#fi
+#
+#source $ZSH/oh-my-zsh.sh
+#
+# ---------------------------------------------------
+
+# export WORKON_HOME=$HOME/.virtualenvs
+# export PROJECT_HOME=$HOME/Devel
+# aource /usr/local/bin/virtualenvwrapper.sh
+export GOPATH=/usr/lib/go
+# export GOPATH=/home/user/workspace
+export GOROOT=/home/husseljo/go
+export PATH=$GOPATH/bin:$PATH
+
+source "/usr/bin/virtualenvwrapper.sh"
+export WORKON_HOME="~/.virtualenvs"
+# source `which virtualenvwrapper.sh`
+# /home/husseljo/.local/bin/virtualenvwrapper.sh
