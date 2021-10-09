@@ -50,6 +50,7 @@ Plug 'dag/vim-fish'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'lervag/vimtex'
+" Plug 'xuhdev/vim-latex-live-preview'
 
 Plug 'preservim/nerdtree'
 Plug 'kabouzeid/nvim-lspinstall'
@@ -57,7 +58,20 @@ Plug 'kabouzeid/nvim-lspinstall'
 Plug 'pangloss/vim-javascript'
 Plug 'tomasiser/vim-code-dark'
 
+"Auto-save
+Plug '907th/vim-auto-save'
+Plug 'joereynolds/sql-lint'
+
+"Haskell
+Plug 'neovimhaskell/haskell-vim'
+Plug 'alx741/vim-hindent'
+
 call plug#end()
+let g:hindent_on_save = 1
+
+" let g:livepreview_previewer = 'open -a zathura'
+autocmd Filetype tex setl updatetime=1
+
 
 nnoremap <Leader><space> :noh<CR>
 
@@ -65,8 +79,6 @@ nmap <C-_> gcc
 inoremap <C-_> gcc 
 vnoremap <C-_> gcc 
 nnoremap <C-_> gcc 
-
-map <C-a> ggVG
 
 
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -91,18 +103,18 @@ set conceallevel=1
 let g:tex_conceal='abdmg'
 
 if has('nvim')
-    set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
-    set inccommand=nosplit
-    noremap <C-q> :confirm qall<CR>
+set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
+set inccommand=nosplit
+noremap <C-q> :confirm qall<CR>
 end
 
 " deal with colors
 if !has('gui_running')
-  set t_Co=256
+set t_Co=256
 endif
 if (match($TERM, "-256color") != -1) && (match($TERM, "screen-256color") == -1)
-  " screen does not (yet) support truecolor
-  set termguicolors
+" screen does not (yet) support truecolor
+set termguicolors
 endif
 set background=dark
 let base16colorspace=256
@@ -119,92 +131,123 @@ hi Normal ctermbg=NONE
 lua << END
 local lspconfig = require('lspconfig')
 local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
-  --Enable completion triggered by <c-x><c-o>
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+--Enable completion triggered by <c-x><c-o>
+buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  -- Mappings.
-  local opts = { noremap=true, silent=true }
+-- Mappings.
+local opts = { noremap=true, silent=true }
 
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', '<space>a', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-  buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+-- See `:help vim.lsp.*` for documentation on any of the below functions
+buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+buf_set_keymap('n', '<space>a', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 
-  -- Forward to other plugins
-  require'completion'.on_attach(client)
+-- Forward to other plugins
+require'completion'.on_attach(client)
 end
 
-local servers = { "rust_analyzer", "pyright", "tsserver", "sqls"}
-for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup {
+
+lspconfig.hls.setup{
     on_attach = on_attach,
-    flags = {
-      debounce_text_changes = 150,
+    root_dir = vim.loop.cwd,
+    settings = {
+      rootMarkers = {"./git/"}
     }
-  }
+}
+
+
+
+local servers = { "rust_analyzer", "pyright", "tsserver", "sqls" }
+for _, lsp in ipairs(servers) do
+lspconfig[lsp].setup {
+on_attach = on_attach,
+flags = {
+debounce_text_changes = 150,
+}
+}
 end
+
+    
+
+--require'lspconfig'.sqls.setup{
+--  settings = {
+--    sqls = {
+--      connections = {
+--        {
+--          driver = 'mysql',
+--          dataSourceName = 'root:root@tcp(127.0.0.1:13306)/ItWorx',
+--        },
+--        {
+--          driver = 'postgresql',
+--          dataSourceName = 'host=127.0.0.1 port=15432 user=postgres password=mysecretpassword1234 dbname=dvdrental sslmode=disable',
+--        },
+--      },
+--    },
+--  },
+--}
+
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    virtual_text = true,
-    signs = true,
-    update_in_insert = tre,
-  }
+vim.lsp.diagnostic.on_publish_diagnostics, {
+virtual_text = true,
+signs = true,
+update_in_insert = tre,
+}
 )
 END
 
 " Plugin settings
 let g:secure_modelines_allowed_items = [
-                \ "textwidth",   "tw",
-                \ "softtabstop", "sts",
-                \ "tabstop",     "ts",
-                \ "shiftwidth",  "sw",
-                \ "expandtab",   "et",   "noexpandtab", "noet",
-                \ "filetype",    "ft",
-                \ "foldmethod",  "fdm",
-                \ "readonly",    "ro",   "noreadonly", "noro",
-                \ "rightleft",   "rl",   "norightleft", "norl",
-                \ "colorcolumn"
-                \ ]
+	\ "textwidth",   "tw",
+	\ "softtabstop", "sts",
+	\ "tabstop",     "ts",
+	\ "shiftwidth",  "sw",
+	\ "expandtab",   "et",   "noexpandtab", "noet",
+	\ "filetype",    "ft",
+	\ "foldmethod",  "fdm",
+	\ "readonly",    "ro",   "noreadonly", "noro",
+	\ "rightleft",   "rl",   "norightleft", "norl",
+	\ "colorcolumn"
+	\ ]
 
 " Lightline
 let g:lightline = {
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'readonly', 'filename', 'modified' ] ],
-      \   'right': [ [ 'lineinfo' ],
-      \              [ 'percent' ],
-      \              [ 'fileencoding', 'filetype' ] ],
-      \ },
-      \ 'component_function': {
-      \   'filename': 'LightlineFilename'
-      \ },
-      \ }
+\ 'active': {
+\   'left': [ [ 'mode', 'paste' ],
+\             [ 'readonly', 'filename', 'modified' ] ],
+\   'right': [ [ 'lineinfo' ],
+\              [ 'percent' ],
+\              [ 'fileencoding', 'filetype' ] ],
+\ },
+\ 'component_function': {
+\   'filename': 'LightlineFilename'
+\ },
+\ }
 function! LightlineFilename()
-  return expand('%:t') !=# '' ? @% : '[No Name]'
+return expand('%:t') !=# '' ? @% : '[No Name]'
 endfunction
 
 " from http://sheerun.net/2014/03/21/how-to-boost-your-vim-productivity/
 if executable('ag')
-	set grepprg=ag\ --nogroup\ --nocolor
+set grepprg=ag\ --nogroup\ --nocolor
 endif
 if executable('rg')
-	set grepprg=rg\ --no-heading\ --vimgrep
-	set grepformat=%f:%l:%c:%m
+set grepprg=rg\ --no-heading\ --vimgrep
+set grepformat=%f:%l:%c:%m
 endif
 
 " Javascript
@@ -399,20 +442,20 @@ noremap <leader>c :w !xsel -ib<cr><cr>
 " noremap <leader>s :Rg
 let g:fzf_layout = { 'down': '~20%' }
 command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
-  \   <bang>0 ? fzf#vim#with_preview('up:60%')
-  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \   <bang>0)
+\ call fzf#vim#grep(
+\   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
+\   <bang>0 ? fzf#vim#with_preview('up:60%')
+\           : fzf#vim#with_preview('right:50%:hidden', '?'),
+\   <bang>0)
 
 function! s:list_cmd()
-  let base = fnamemodify(expand('%'), ':h:.:S')
-  return base == '.' ? 'fd --type file --follow' : printf('fd --type file --follow | proximity-sort %s', shellescape(expand('%')))
+let base = fnamemodify(expand('%'), ':h:.:S')
+return base == '.' ? 'fd --type file --follow' : printf('fd --type file --follow | proximity-sort %s', shellescape(expand('%')))
 endfunction
 
 command! -bang -nargs=? -complete=dir Files
-  \ call fzf#vim#files(<q-args>, {'source': s:list_cmd(),
-  \                               'options': '--tiebreak=index'}, <bang>0)
+\ call fzf#vim#files(<q-args>, {'source': s:list_cmd(),
+\                               'options': '--tiebreak=index'}, <bang>0)
 
 
 " Open new file adjacent to current file
@@ -429,6 +472,12 @@ inoremap <right> <nop>
 " Left and right can switch buffers
 nnoremap <left> :bp<CR>
 nnoremap <right> :bn<CR>
+
+" <leader><leader> toggles between buffers
+" nnoremap <leader><leader> <c-^> SAME THING
+nnoremap \\ :b#<CR>
+nnoremap <leader>b :b#<CR>
+nnoremap \b :b#<CR>
 
 " Move by line
 nnoremap j gj
@@ -490,6 +539,9 @@ endif
 au Filetype rust source ~/.config/nvim/scripts/spacetab.vim
 au Filetype rust set colorcolumn=100
 
+"javascript
+au Filetype javascript source ~/.config/nvim/scripts/spacetab.vim
+
 " Help filetype detection
 autocmd BufRead *.plot set filetype=gnuplot
 autocmd BufRead *.md set filetype=markdown
@@ -542,14 +594,24 @@ if (empty($TMUX))
     set termguicolors
   endif
 endif
-
-
-" let g:gruvbox_contrast_dark = 'hard'
-"colorscheme gruvbox
+ " let g:gruvbox_contrast_dark = 'hard'
+" colorscheme gruvbox
 colorscheme codedark
 let g:airline_theme = 'codedark'
 
-"colorscheme base16-gruvbox-dark-hard
+" colorscheme base16-gruvbox-dark-hard
+
+"haskell
+let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
+let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
+let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
+let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
+let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
+let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
+let g:haskell_classic_highlighting = 1
+
+
 highlight LspDiagnosticsVirtualTextError guifg=Red ctermfg=Red
 highlight LspDiagnosticsVirtualTextWarning guifg=Yellow ctermfg=Yellow
 " highlight LspDiagnosticsVirtualTextHint guifg=Blue ctermfg=Blue
@@ -557,6 +619,25 @@ highlight LspDiagnosticsVirtualTextWarning guifg=Yellow ctermfg=Yellow
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 
 
+nmap \w :w<CR>
+noremap Y y$
+
+nnoremap <A-j> :m .+1<CR>==
+nnoremap <A-k> :m .-2<CR>==
+inoremap <A-j> <Esc>:m .+1<CR>==gi
+inoremap <A-k> <Esc>:m .-2<CR>==gi
+vnoremap <A-j> :m '>+1<CR>gv=gv
+vnoremap <A-k> :m '<-2<CR>gv=gv
+
 autocmd FileType javascript nnoremap <F9> :w<Enter> :! node %<Enter>
+autocmd FileType javascript nnoremap <F10> :w<Enter> :! npm run app<Enter>
+
 autocmd FileType python nnoremap <F9> :w<Enter> :! python %<Enter>
+
 autocmd FileType rust nnoremap <F9> :w<Enter> :! cargo run<Enter>
+autocmd FileType rust nmap \p oprintln!("");<Esc>$F"i
+autocmd FileType rust nmap \P Oprintln!("");<Esc>$F"i
+autocmd FileType rust nmap \P Oprintln!("");<Esc>$F"i
+
+autocmd FileType haskell nnoremap <F9> :w<Enter> :! ~/run_haskell.sh %<Enter>
+au Filetype haskell source ~/.config/nvim/scripts/spacetab2.vim
