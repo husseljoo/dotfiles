@@ -45,7 +45,7 @@ import XMonad.Layout.ThreeColumns
     -- Layouts modifiers
 import XMonad.Layout.LayoutModifier
 import XMonad.Layout.LimitWindows (limitWindows, increaseLimit, decreaseLimit)
--- import XMonad.Layout.Magnifier
+import XMonad.Layout.Magnifier
 import XMonad.Layout.MultiToggle (mkToggle, single, EOT(EOT), (??))
 import XMonad.Layout.MultiToggle.Instances (StdTransformers(NBFULL, MIRROR, NOBORDERS))
 import XMonad.Layout.NoBorders
@@ -58,7 +58,6 @@ import XMonad.Layout.WindowArranger (windowArrange, WindowArrangerMsg(..))
 import XMonad.Layout.WindowNavigation
 import qualified XMonad.Layout.ToggleLayouts as T (toggleLayouts, ToggleLayout(Toggle))
 import qualified XMonad.Layout.MultiToggle as MT (Toggle(..))
-import XMonad.Actions.NoBorders --added by me
 
    -- Utilities
 import XMonad.Util.Dmenu
@@ -77,14 +76,14 @@ myTerminal :: String
 myTerminal = "alacritty"    -- Sets default terminal
 
 myBrowser :: String
-myBrowser = "firefox-developer-edition"  -- Sets qutebrowser as browser
+myBrowser = "qutebrowser "  -- Sets qutebrowser as browser
 
 myEmacs :: String
 myEmacs = "emacsclient -c -a 'emacs' "  -- Makes emacs keybindings easier to type
 
 myEditor :: String
--- myEditor = "emacsclient -c -a 'emacs' "  -- Sets emacs as editor
-myEditor = myTerminal ++ " -e vim "    -- Sets vim as editor
+myEditor = "emacsclient -c -a 'emacs' "  -- Sets emacs as editor
+-- myEditor = myTerminal ++ " -e vim "    -- Sets vim as editor
 
 myBorderWidth :: Dimension
 myBorderWidth = 2           -- Sets border width for windows
@@ -104,14 +103,14 @@ myStartupHook = do
     spawnOnce "picom &"
     spawnOnce "nm-applet &"
     spawnOnce "volumeicon &"
-    spawnOnce "conky -c $HOME/.config/conky/xmonad.conkyrc"
+    spawnOnce "conky -c $HOME/.config/conky/doomone-xmonad.conkyrc"
     spawnOnce "trayer --edge top --align right --widthtype request --padding 6 --SetDockType true --SetPartialStrut true --expand true --monitor 1 --transparent true --alpha 0 --tint 0x282c34  --height 22 &"
-    -- spawnOnce "/usr/bin/emacs --daemon &" -- emacs daemon for the emacsclient
-    -- spawnOnce "kak -d -s mysession &"  -- kakoune daemon for better performance
-    -- spawnOnce "urxvtd -q -o -f &"      -- urxvt daemon for better performance
+    spawnOnce "/usr/bin/emacs --daemon &" -- emacs daemon for the emacsclient
+    -- uncomment to restore last saved wallpaper
+    spawnOnce "xargs xwallpaper --stretch < ~/.xwalpaper"
+    --uncomment to set a random wallpaper on login
+    -- spawnOnce "find /usr/share/backgrounds/dtos-backgrounds/ -type f | shuf -n 1 | xargs xwallpaper --stretch"
 
-    spawnOnce "xargs xwallpaper --stretch < ~/.xwallpaper"  -- set last saved with xwallpaper
-    -- spawnOnce "find ~/wallpapers/ -type f | shuf -n 1 | xargs xwallpaper --stretch"  -- set random xwallpaper
     -- spawnOnce "~/.fehbg &"  -- set last saved feh wallpaper
     -- spawnOnce "feh --randomize --bg-fill ~/wallpapers/*"  -- feh set random wallpaper
     -- spawnOnce "nitrogen --restore &"   -- if you prefer nitrogen to feh
@@ -212,21 +211,21 @@ tall     = renamed [Replace "tall"]
            $ limitWindows 12
            $ mySpacing 8
            $ ResizableTall 1 (3/100) (1/2) []
--- magnify  = renamed [Replace "magnify"]
---            $ smartBorders
---            $ windowNavigation
---            $ addTabs shrinkText myTabTheme
---            $ subLayout [] (smartBorders Simplest)
---            -- $ magnifier
---            $ limitWindows 12
---            $ mySpacing 8
---            $ ResizableTall 1 (3/100) (1/2) []
--- monocle  = renamed [Replace "monocle"]
---            $ smartBorders
---            $ windowNavigation
---            $ addTabs shrinkText myTabTheme
---            $ subLayout [] (smartBorders Simplest)
---            $ limitWindows 20 Full
+magnify  = renamed [Replace "magnify"]
+           $ smartBorders
+           $ windowNavigation
+           $ addTabs shrinkText myTabTheme
+           $ subLayout [] (smartBorders Simplest)
+           $ magnifier
+           $ limitWindows 12
+           $ mySpacing 8
+           $ ResizableTall 1 (3/100) (1/2) []
+monocle  = renamed [Replace "monocle"]
+           $ smartBorders
+           $ windowNavigation
+           $ addTabs shrinkText myTabTheme
+           $ subLayout [] (smartBorders Simplest)
+           $ limitWindows 20 Full
 floats   = renamed [Replace "floats"]
            $ smartBorders
            $ limitWindows 20 simplestFloat
@@ -239,38 +238,38 @@ grid     = renamed [Replace "grid"]
            $ mySpacing 8
            $ mkToggle (single MIRROR)
            $ Grid (16/10)
--- spirals  = renamed [Replace "spirals"]
---            $ smartBorders
---            $ windowNavigation
---            $ addTabs shrinkText myTabTheme
---            $ subLayout [] (smartBorders Simplest)
---            $ mySpacing' 8
---            $ spiral (6/7)
--- threeCol = renamed [Replace "threeCol"]
---            $ smartBorders
---            $ windowNavigation
---            $ addTabs shrinkText myTabTheme
---            $ subLayout [] (smartBorders Simplest)
---            $ limitWindows 7
---            $ ThreeCol 1 (3/100) (1/2)
--- threeRow = renamed [Replace "threeRow"]
---            $ smartBorders
---            $ windowNavigation
---            $ addTabs shrinkText myTabTheme
---            $ subLayout [] (smartBorders Simplest)
---            $ limitWindows 7
---            -- Mirror takes a layout and rotates it by 90 degrees.
---            -- So we are applying Mirror to the ThreeCol layout.
---            $ Mirror
---            $ ThreeCol 1 (3/100) (1/2)
--- tabs     = renamed [Replace "tabs"]
---            -- I cannot add spacing to this layout because it will
---            -- add spacing between window and tabs which looks bad.
---            $ tabbed shrinkText myTabTheme
--- tallAccordion  = renamed [Replace "tallAccordion"]
---            $ Accordion
--- wideAccordion  = renamed [Replace "wideAccordion"]
---            $ Mirror Accordion
+spirals  = renamed [Replace "spirals"]
+           $ smartBorders
+           $ windowNavigation
+           $ addTabs shrinkText myTabTheme
+           $ subLayout [] (smartBorders Simplest)
+           $ mySpacing' 8
+           $ spiral (6/7)
+threeCol = renamed [Replace "threeCol"]
+           $ smartBorders
+           $ windowNavigation
+           $ addTabs shrinkText myTabTheme
+           $ subLayout [] (smartBorders Simplest)
+           $ limitWindows 7
+           $ ThreeCol 1 (3/100) (1/2)
+threeRow = renamed [Replace "threeRow"]
+           $ smartBorders
+           $ windowNavigation
+           $ addTabs shrinkText myTabTheme
+           $ subLayout [] (smartBorders Simplest)
+           $ limitWindows 7
+           -- Mirror takes a layout and rotates it by 90 degrees.
+           -- So we are applying Mirror to the ThreeCol layout.
+           $ Mirror
+           $ ThreeCol 1 (3/100) (1/2)
+tabs     = renamed [Replace "tabs"]
+           -- I cannot add spacing to this layout because it will
+           -- add spacing between window and tabs which looks bad.
+           $ tabbed shrinkText myTabTheme
+tallAccordion  = renamed [Replace "tallAccordion"]
+           $ Accordion
+wideAccordion  = renamed [Replace "wideAccordion"]
+           $ Mirror Accordion
 
 -- setting colors for tabs layout and tabs sublayout.
 myTabTheme = def { fontName            = myFont
@@ -291,43 +290,24 @@ myShowWNameTheme = def
     , swn_color             = "#ffffff"
     }
 
-
-
-
-
--- to change the thing
--- myLayout =avoidStruts( tiled ||| Full)
---   where
---      -- default tiling algorithm partitions the screen into two panes
---      tiled   = Tall nmaster delta ratio
---      -- The default number of windows in the master pane
-     -- nmaster = 1
---      -- Default proportion of screen occupied by master pane
-     -- ratio   = 1/2
---      -- Percent of screen to increment by when resizing panes
-     -- delta   = 3/100
-
-
-
 -- The layout hook
 myLayoutHook = avoidStruts $ mouseResize $ windowArrange $ T.toggleLayouts floats
                $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) myDefaultLayout
              where
-               myDefaultLayout =   		Full 
-										withBorder myBorderWidth tall --nmaster delta ratio
-                                 -- ||| magnify
-                                 -- ||| noBorders monocle
-                                 -- ||| floats
-                                 -- ||| noBorders tabs
-                                 -- ||| grid
-                                 -- ||| spirals
-                                 -- ||| threeCol
-                                 -- ||| threeRow
-                                 -- ||| tallAccordion
-                                 -- ||| wideAccordion
+               myDefaultLayout =     withBorder myBorderWidth tall
+                                 ||| magnify
+                                 ||| noBorders monocle
+                                 ||| floats
+                                 ||| noBorders tabs
+                                 ||| grid
+                                 ||| spirals
+                                 ||| threeCol
+                                 ||| threeRow
+                                 ||| tallAccordion
+                                 ||| wideAccordion
 
-myWorkspaces = [" 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 "]
--- myWorkspaces = [" dev ", " www ", " sys ", " doc ", " vbox ", " chat ", " mus ", " vid ", " gfx "]
+-- myWorkspaces = [" 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 "]
+myWorkspaces = [" dev ", " www ", " sys ", " doc ", " vbox ", " chat ", " mus ", " vid ", " gfx "]
 myWorkspaceIndices = M.fromList $ zipWith (,) myWorkspaces [1..] -- (,) == \x y -> (x,y)
 
 clickable ws = "<action=xdotool key super+"++show i++">"++ws++"</action>"
@@ -352,8 +332,7 @@ myManageHook = composeAll
      , className =? "Yad"             --> doCenterFloat
      , title =? "Oracle VM VirtualBox Manager"  --> doFloat
      , title =? "Mozilla Firefox"     --> doShift ( myWorkspaces !! 1 )
-     , className =? "brave-browser"   --> doShift ( myWorkspaces !! 1 )
-     , className =? "qutebrowser"     --> doShift ( myWorkspaces !! 1 )
+     , className =? "Brave-browser"   --> doShift ( myWorkspaces !! 1 )
      , className =? "mpv"             --> doShift ( myWorkspaces !! 7 )
      , className =? "Gimp"            --> doShift ( myWorkspaces !! 8 )
      , className =? "VirtualBox Manager" --> doShift  ( myWorkspaces !! 4 )
@@ -367,32 +346,32 @@ myKeys =
     -- KB_GROUP Xmonad
         [ ("M-C-r", spawn "xmonad --recompile")  -- Recompiles xmonad
         , ("M-S-r", spawn "xmonad --restart")    -- Restarts xmonad
-        , ("M-q", spawn "xmonad --recompile;xmonad --restart;") --Recompile and Restart xmonad
         , ("M-S-q", io exitSuccess)              -- Quits xmonad
         , ("M-S-/", spawn "~/.xmonad/xmonad_keys.sh")
 
     -- KB_GROUP Run Prompt
-        , ("M-S-<Return>", spawn "dmenu_run -i -p \"Run: \"") -- Dmenu
+        , ("M-p", spawn "dmenu_run -i -p \"Run: \"") -- Dmenu
 
     -- KB_GROUP Other Dmenu Prompts
     -- In Xmonad and many tiling window managers, M-p is the default keybinding to
     -- launch dmenu_run, so I've decided to use M-p plus KEY for these dmenu scripts.
-        , ("M-p a", spawn "dm-sounds")    -- choose an ambient background
-        , ("M-p b", spawn "dm-setbg")     -- set a background
-        , ("M-p c", spawn "dm-colpick")   -- pick color from our scheme
-        , ("M-p e", spawn "dm-confedit")  -- edit config files
-        , ("M-p i", spawn "dm-maim")      -- screenshots (images)
-        , ("M-p k", spawn "dm-kill")      -- kill processes
-        , ("M-p m", spawn "dm-man")       -- manpages
-        , ("M-p o", spawn "dm-bookman")   -- qutebrowser bookmarks/history
-        , ("M-p p", spawn "passmenu")     -- passmenu
-        , ("M-p q", spawn "dm-logout")    -- logout menu
-        , ("M-p r", spawn "dm-reddit")    -- reddio (a reddit viewer)
-        , ("M-p s", spawn "dm-websearch") -- search various search engines
+        -- , ("M-p a", spawn "dm-sounds")    -- choose an ambient background
+        -- , ("M-p b", spawn "dm-setbg")     -- set a background
+        -- , ("M-p c", spawn "dm-colpick")   -- pick color from our scheme
+        -- , ("M-p e", spawn "dm-confedit")  -- edit config files
+        -- , ("M-p i", spawn "dm-maim")      -- screenshots (images)
+        -- , ("M-p k", spawn "dm-kill")      -- kill processes
+        -- , ("M-p m", spawn "dm-man")       -- manpages
+        -- , ("M-p o", spawn "dm-bookman")   -- qutebrowser bookmarks/history
+        -- , ("M-p p", spawn "passmenu")     -- passmenu
+        -- , ("M-p q", spawn "dm-logout")    -- logout menu
+        -- , ("M-p r", spawn "dm-reddit")    -- reddio (a reddit viewer)
+        -- , ("M-p s", spawn "dm-websearch") -- search various search engines
 
     -- KB_GROUP Useful programs to have a keybinding for launch
-        , ("M-<Return>", spawn (myTerminal))
-        , ("M-b", spawn (myBrowser))
+        , ("M-S-<Return>", spawn (myTerminal))
+        -- , ("M-<Return>", spawn (myTerminal))
+	-- , ("M-b", spawn (myBrowser))
         , ("M-M1-h", spawn (myTerminal ++ " -e htop"))
 
     -- KB_GROUP Kill windows
@@ -407,8 +386,7 @@ myKeys =
 
     -- KB_GROUP Floating windows
         , ("M-f", sendMessage (T.Toggle "floats")) -- Toggles my 'floats' layout
-        -- , ("M-t", withFocused $ windows . W.sink)  -- Push floating window back to tile
-        , ("M-t", withFocused toggleBorder)  -- toggle border XXXXXXXXXXXXXXX
+        , ("M-t", withFocused $ windows . W.sink)  -- Push floating window back to tile
         , ("M-S-t", sinkAll)                       -- Push ALL floating windows to tile
 
     -- KB_GROUP Increase/decrease spacing (gaps)
@@ -429,15 +407,16 @@ myKeys =
         , ("M-S-m", windows W.swapMaster) -- Swap the focused window and the master window
         , ("M-S-j", windows W.swapDown)   -- Swap focused window with next window
         , ("M-S-k", windows W.swapUp)     -- Swap focused window with prev window
-        -- , ("M-<Backspace>", promote)      -- Moves focused window to master, others maintain order
+        , ("M-<Return>", promote)      -- Moves focused window to master, others maintain order
         , ("M-S-<Tab>", rotSlavesDown)    -- Rotate all windows except master and keep focus in place
         , ("M-C-<Tab>", rotAllDown)       -- Rotate all the windows in the current stack
 
     -- KB_GROUP Layouts
-        -- , ("M-<Tab>", sendMessage NextLayout)           -- Switch to next layout
-        , ("M-<Tab>", windows W.focusDown)    -- Move focus to the next window
-        -- , ("M-<Space>", sendMessage (MT.Toggle NBFULL) >> sendMessage ToggleStruts) -- Toggles noborder/full
-        , ("M-<Space>", sendMessage NextLayout) -- goes to the next layout XXXXXXXXXXXXXXXx
+	, ("M-<Tab>", windows W.focusUp)             --Move focus to the prev window
+        , ("M-<Backspace>", sendMessage NextLayout)
+	-- , ("M-<Tab>", sendMessage NextLayout)           -- Switch to next layout
+        -- , ("M-k", windows W.focusUp)      -- Move focus to the prev window
+        , ("M-<Space>", sendMessage (MT.Toggle NBFULL) >> sendMessage ToggleStruts) -- Toggles noborder/full
 
     -- KB_GROUP Increase/decrease windows in the master pane or the stack
         , ("M-S-<Up>", sendMessage (IncMasterN 1))      -- Increase # of clients master pane
@@ -467,16 +446,16 @@ myKeys =
     -- Toggle show/hide these programs.  They run on a hidden workspace.
     -- When you toggle them to show, it brings them to your current workspace.
     -- Toggle them to hide and it sends them back to hidden workspace (NSP).
-        , ("C-s t", namedScratchpadAction myScratchPads "terminal")
-        , ("C-s m", namedScratchpadAction myScratchPads "mocp")
-        , ("C-s c", namedScratchpadAction myScratchPads "calculator")
+        , ("M-s t", namedScratchpadAction myScratchPads "terminal")
+        , ("M-s m", namedScratchpadAction myScratchPads "mocp")
+        , ("M-s c", namedScratchpadAction myScratchPads "calculator")
 
     -- KB_GROUP Set wallpaper
-    -- Set wallpaper with 'feh'. Type 'SUPER+F1' to launch sxiv in the wallpapers directory.
-    -- Then in sxiv, type 'C-x w' to set the wallpaper that you choose.
-        , ("M-<F1>", spawn "sxiv -r -q -t -o ~/wallpapers/*")
-        , ("M-<F2>", spawn "find ~/wallpapers/ -type f | shuf -n 1 | xargs xwallpaper --stretch")
-        -- , ("M-<F2>", spawn "feh --randomize --bg-fill ~/wallpapers/*")
+    -- Set wallpaper with either 'xwallwaper'. Type 'SUPER+F1' to launch sxiv in the
+    -- wallpapers directory; then in sxiv, type 'C-x x' to set the wallpaper that you
+    -- choose.  Or, type 'SUPER+F2' to set a random wallpaper.
+        , ("M-<F1>", spawn "sxiv -r -q -t -o /usr/share/backgrounds/dtos-backgrounds/*")
+        , ("M-<F2>", spawn "find /usr/share/backgrounds/dtos-backgrounds// -type f | shuf -n 1 | xargs xwallpaper --stretch")
 
     -- KB_GROUP Controls for mocp music player (SUPER-u followed by a key)
         , ("M-u p", spawn "mocp --play")
@@ -485,21 +464,16 @@ myKeys =
         , ("M-u <Space>", spawn "mocp --toggle-pause")
 
     -- KB_GROUP Emacs (CTRL-e followed by a key)
-        -- , ("C-e e", spawn myEmacs)                 -- start emacs
         , ("C-e e", spawn (myEmacs ++ ("--eval '(dashboard-refresh-buffer)'")))   -- emacs dashboard
         , ("C-e b", spawn (myEmacs ++ ("--eval '(ibuffer)'")))   -- list buffers
         , ("C-e d", spawn (myEmacs ++ ("--eval '(dired nil)'"))) -- dired
         , ("C-e i", spawn (myEmacs ++ ("--eval '(erc)'")))       -- erc irc client
-        , ("C-e m", spawn (myEmacs ++ ("--eval '(mu4e)'")))      -- mu4e email
         , ("C-e n", spawn (myEmacs ++ ("--eval '(elfeed)'")))    -- elfeed rss
         , ("C-e s", spawn (myEmacs ++ ("--eval '(eshell)'")))    -- eshell
         , ("C-e t", spawn (myEmacs ++ ("--eval '(mastodon)'")))  -- mastodon.el
-        -- , ("C-e v", spawn (myEmacs ++ ("--eval '(vterm nil)'"))) -- vterm if on GNU Emacs
         , ("C-e v", spawn (myEmacs ++ ("--eval '(+vterm/here nil)'"))) -- vterm if on Doom Emacs
-        -- , ("C-e w", spawn (myEmacs ++ ("--eval '(eww \"distrotube.com\")'"))) -- eww browser if on GNU Emacs
         , ("C-e w", spawn (myEmacs ++ ("--eval '(doom/window-maximize-buffer(eww \"distrotube.com\"))'"))) -- eww browser if on Doom Emacs
-        -- emms is an emacs audio player. I set it to auto start playing in a specific directory.
-        , ("C-e a", spawn (myEmacs ++ ("--eval '(emms)' --eval '(emms-play-directory-tree \"~/Music/Non-Classical/70s-80s/\")'")))
+        , ("C-e a", spawn (myEmacs ++ ("--eval '(emms)' --eval '(emms-play-directory-tree \"~/Music/\")'")))
 
     -- KB_GROUP Multimedia Keys
         , ("<XF86AudioPlay>", spawn "mocp --play")
@@ -523,9 +497,9 @@ myKeys =
 main :: IO ()
 main = do
     -- Launching three instances of xmobar on their monitors.
-    xmproc0 <- spawnPipe "xmobar -x 0 $HOME/.config/xmobar/xmobarrc0"
-    xmproc1 <- spawnPipe "xmobar -x 1 $HOME/.config/xmobar/xmobarrc1"
-    xmproc2 <- spawnPipe "xmobar -x 2 $HOME/.config/xmobar/xmobarrc2"
+    xmproc0 <- spawnPipe "xmobar -x 0 $HOME/.config/xmobar/xmobarrc"
+    xmproc1 <- spawnPipe "xmobar -x 1 $HOME/.config/xmobar/xmobarrc"
+    xmproc2 <- spawnPipe "xmobar -x 2 $HOME/.config/xmobar/xmobarrc"
     -- the xmonad, ya know...what the WM is named after!
     xmonad $ ewmh def
         { manageHook         = myManageHook <+> manageDocks
