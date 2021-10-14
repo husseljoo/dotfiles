@@ -66,6 +66,8 @@ import XMonad.Util.NamedScratchpad
 import XMonad.Util.Run (runProcessWithInput, safeSpawn, spawnPipe)
 import XMonad.Util.SpawnOnce
 
+import Graphics.X11.ExtraTypes.XF86
+
 myFont :: String
 myFont = "xft:SauceCodePro Nerd Font Mono:regular:size=9:antialias=true:hinting=true"
 
@@ -76,7 +78,7 @@ myTerminal :: String
 myTerminal = "alacritty"    -- Sets default terminal
 
 myBrowser :: String
-myBrowser = "qutebrowser "  -- Sets qutebrowser as browser
+myBrowser = "firefox-developer-edition"  -- Sets qutebrowser as browser
 
 myEmacs :: String
 myEmacs = "emacsclient -c -a 'emacs' "  -- Makes emacs keybindings easier to type
@@ -99,17 +101,15 @@ windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace
 
 myStartupHook :: X ()
 myStartupHook = do
-    spawnOnce "lxsession &"
+    -- spawnOnce "nitrogen --restore &"
     spawnOnce "picom &"
     spawnOnce "nm-applet &"
     spawnOnce "volumeicon &"
-    spawnOnce "conky -c $HOME/.config/conky/doomone-xmonad.conkyrc"
-    spawnOnce "trayer --edge top --align right --widthtype request --padding 6 --SetDockType true --SetPartialStrut true --expand true --monitor 1 --transparent true --alpha 0 --tint 0x282c34  --height 22 &"
-    spawnOnce "/usr/bin/emacs --daemon &" -- emacs daemon for the emacsclient
     -- uncomment to restore last saved wallpaper
-    spawnOnce "xargs xwallpaper --stretch < ~/.xwalpaper"
+    -- spawnOnce "xargs xwallpaper --stretch < ~/.xwalpaper"
     --uncomment to set a random wallpaper on login
-    -- spawnOnce "find /usr/share/backgrounds/dtos-backgrounds/ -type f | shuf -n 1 | xargs xwallpaper --stretch"
+    spawn "find /usr/share/backgrounds/nature-wallpapers/ -type f | shuf -n 1 | xargs xwallpaper --stretch"
+    spawnOnce "firefox-developer-edition"
 
     -- spawnOnce "~/.fehbg &"  -- set last saved feh wallpaper
     -- spawnOnce "feh --randomize --bg-fill ~/wallpapers/*"  -- feh set random wallpaper
@@ -371,7 +371,7 @@ myKeys =
     -- KB_GROUP Useful programs to have a keybinding for launch
         , ("M-S-<Return>", spawn (myTerminal))
         -- , ("M-<Return>", spawn (myTerminal))
-	-- , ("M-b", spawn (myBrowser))
+	, ("M-b", spawn (myBrowser))
         , ("M-M1-h", spawn (myTerminal ++ " -e htop"))
 
     -- KB_GROUP Kill windows
@@ -454,8 +454,9 @@ myKeys =
     -- Set wallpaper with either 'xwallwaper'. Type 'SUPER+F1' to launch sxiv in the
     -- wallpapers directory; then in sxiv, type 'C-x x' to set the wallpaper that you
     -- choose.  Or, type 'SUPER+F2' to set a random wallpaper.
-        , ("M-<F1>", spawn "sxiv -r -q -t -o /usr/share/backgrounds/dtos-backgrounds/*")
-        , ("M-<F2>", spawn "find /usr/share/backgrounds/dtos-backgrounds// -type f | shuf -n 1 | xargs xwallpaper --stretch")
+        -- , ("M-<F1>", spawn "sxiv -r -q -t -o /usr/share/backgrounds/dtos-backgrounds/*")
+        , ("M-<F2>", spawn "find /usr/share/backgrounds/nature-wallpapers/ -type f | shuf -n 1 | xargs xwallpaper --stretch")
+        , ("M-<F3>", spawn "toggle_allacritty_opacity")
 
     -- KB_GROUP Controls for mocp music player (SUPER-u followed by a key)
         , ("M-u p", spawn "mocp --play")
@@ -488,6 +489,11 @@ myKeys =
         , ("<XF86Calculator>", runOrRaise "qalculate-gtk" (resource =? "qalculate-gtk"))
         , ("<XF86Eject>", spawn "toggleeject")
         , ("<Print>", spawn "dm-maim")
+
+	--manage brightness
+	, ("<XF86MonBrightnessUp>", spawn "lux -a 10%")
+	, ("<XF86MonBrightnessDown>", spawn "lux -s 10%")
+
         ]
     -- The following lines are needed for named scratchpads.
           where nonNSP          = WSIs (return (\ws -> W.tag ws /= "NSP"))
