@@ -66,7 +66,9 @@ import XMonad.Util.NamedScratchpad
 import XMonad.Util.Run (runProcessWithInput, safeSpawn, spawnPipe)
 import XMonad.Util.SpawnOnce
 
-import Graphics.X11.ExtraTypes.XF86
+import System.Process
+import XMonad.Actions.Promote as P (promote)
+prom = P.promote
 
 myFont :: String
 myFont = "xft:SauceCodePro Nerd Font Mono:regular:size=9:antialias=true:hinting=true"
@@ -108,14 +110,18 @@ myStartupHook = do
     -- uncomment to restore last saved wallpaper
     -- spawnOnce "xargs xwallpaper --stretch < ~/.xwalpaper"
     --uncomment to set a random wallpaper on login
-    spawn "find /usr/share/backgrounds/nature-wallpapers/ -type f | shuf -n 1 | xargs xwallpaper --stretch"
+    spawnOnce "find /usr/share/backgrounds/nature-wallpapers/ -type f | shuf -n 1 | xargs xwallpaper --stretch"
+
     spawnOnce "firefox-developer-edition"
+    -- spawn "yaya"
     spawnOnce "alacritty"
+    -- make terminal at the left by promoting
 
     -- spawnOnce "~/.fehbg &"  -- set last saved feh wallpaper
     -- spawnOnce "feh --randomize --bg-fill ~/wallpapers/*"  -- feh set random wallpaper
     -- spawnOnce "nitrogen --restore &"   -- if you prefer nitrogen to feh
     setWMName "LG3D"
+
 
 myColorizer :: Window -> Bool -> X (String, String)
 myColorizer = colorRangeFromClassName
@@ -212,65 +218,71 @@ tall     = renamed [Replace "tall"]
            $ limitWindows 12
            $ mySpacing 8
            $ ResizableTall 1 (3/100) (1/2) []
-magnify  = renamed [Replace "magnify"]
-           $ smartBorders
-           $ windowNavigation
-           $ addTabs shrinkText myTabTheme
-           $ subLayout [] (smartBorders Simplest)
-           $ magnifier
-           $ limitWindows 12
-           $ mySpacing 8
-           $ ResizableTall 1 (3/100) (1/2) []
-monocle  = renamed [Replace "monocle"]
-           $ smartBorders
-           $ windowNavigation
-           $ addTabs shrinkText myTabTheme
-           $ subLayout [] (smartBorders Simplest)
-           $ limitWindows 20 Full
+-- magnify  = renamed [Replace "magnify"]
+--            $ smartBorders
+--            $ windowNavigation
+--            $ addTabs shrinkText myTabTheme
+--            $ subLayout [] (smartBorders Simplest)
+--            $ magnifier
+--            $ limitWindows 12
+--            $ mySpacing 8
+--            $ ResizableTall 1 (3/100) (1/2) []
+-- tiled  = renamed [Replace "tiled"]
+--            $ smartBorders
+--            $ windowNavigation
+--            $ addTabs shrinkText myTabTheme
+--            $ subLayout [] (smartBorders Simplest)
+--            $ limitWindows 20 Full
+-- monocle  = renamed [Replace "monocle"]
+--            $ smartBorders
+--            $ windowNavigation
+--            $ addTabs shrinkText myTabTheme
+--            $ subLayout [] (smartBorders Simplest)
+--            $ limitWindows 20 Full
 floats   = renamed [Replace "floats"]
            $ smartBorders
            $ limitWindows 20 simplestFloat
-grid     = renamed [Replace "grid"]
-           $ smartBorders
-           $ windowNavigation
-           $ addTabs shrinkText myTabTheme
-           $ subLayout [] (smartBorders Simplest)
-           $ limitWindows 12
-           $ mySpacing 8
-           $ mkToggle (single MIRROR)
-           $ Grid (16/10)
-spirals  = renamed [Replace "spirals"]
-           $ smartBorders
-           $ windowNavigation
-           $ addTabs shrinkText myTabTheme
-           $ subLayout [] (smartBorders Simplest)
-           $ mySpacing' 8
-           $ spiral (6/7)
-threeCol = renamed [Replace "threeCol"]
-           $ smartBorders
-           $ windowNavigation
-           $ addTabs shrinkText myTabTheme
-           $ subLayout [] (smartBorders Simplest)
-           $ limitWindows 7
-           $ ThreeCol 1 (3/100) (1/2)
-threeRow = renamed [Replace "threeRow"]
-           $ smartBorders
-           $ windowNavigation
-           $ addTabs shrinkText myTabTheme
-           $ subLayout [] (smartBorders Simplest)
-           $ limitWindows 7
-           -- Mirror takes a layout and rotates it by 90 degrees.
-           -- So we are applying Mirror to the ThreeCol layout.
-           $ Mirror
-           $ ThreeCol 1 (3/100) (1/2)
-tabs     = renamed [Replace "tabs"]
-           -- I cannot add spacing to this layout because it will
-           -- add spacing between window and tabs which looks bad.
-           $ tabbed shrinkText myTabTheme
-tallAccordion  = renamed [Replace "tallAccordion"]
-           $ Accordion
-wideAccordion  = renamed [Replace "wideAccordion"]
-           $ Mirror Accordion
+-- grid     = renamed [Replace "grid"]
+--            $ smartBorders
+--            $ windowNavigation
+--            $ addTabs shrinkText myTabTheme
+--            $ subLayout [] (smartBorders Simplest)
+--            $ limitWindows 12
+--            $ mySpacing 8
+--            $ mkToggle (single MIRROR)
+--            $ Grid (16/10)
+-- spirals  = renamed [Replace "spirals"]
+--            $ smartBorders
+--            $ windowNavigation
+--            $ addTabs shrinkText myTabTheme
+--            $ subLayout [] (smartBorders Simplest)
+--            $ mySpacing' 8
+--            $ spiral (6/7)
+-- threeCol = renamed [Replace "threeCol"]
+--            $ smartBorders
+--            $ windowNavigation
+--            $ addTabs shrinkText myTabTheme
+--            $ subLayout [] (smartBorders Simplest)
+--            $ limitWindows 7
+--            $ ThreeCol 1 (3/100) (1/2)
+-- threeRow = renamed [Replace "threeRow"]
+--            $ smartBorders
+--            $ windowNavigation
+--            $ addTabs shrinkText myTabTheme
+--            $ subLayout [] (smartBorders Simplest)
+--            $ limitWindows 7
+--            -- Mirror takes a layout and rotates it by 90 degrees.
+--            -- So we are applying Mirror to the ThreeCol layout.
+--            $ Mirror
+--            $ ThreeCol 1 (3/100) (1/2)
+-- tabs     = renamed [Replace "tabs"]
+--            -- I cannot add spacing to this layout because it will
+--            -- add spacing between window and tabs which looks bad.
+--            $ tabbed shrinkText myTabTheme
+-- tallAccordion  = renamed [Replace "tallAccordion"]
+--            $ Accordion
+-- wideAccordion  = renamed [Replace "wideAccordion"]
+--            $ Mirror Accordion
 
 -- setting colors for tabs layout and tabs sublayout.
 myTabTheme = def { fontName            = myFont
@@ -296,16 +308,23 @@ myLayoutHook = avoidStruts $ mouseResize $ windowArrange $ T.toggleLayouts float
                $ mkToggle (NBFULL ?? NOBORDERS ?? EOT) myDefaultLayout
              where
                myDefaultLayout =     withBorder myBorderWidth tall
-                                 ||| magnify
-                                 ||| noBorders monocle
-                                 ||| floats
-                                 ||| noBorders tabs
-                                 ||| grid
-                                 ||| spirals
-                                 ||| threeCol
-                                 ||| threeRow
-                                 ||| tallAccordion
-                                 ||| wideAccordion
+                                 -- ||| magnify
+                                 ||| noBorders tiled
+                                 -- ||| noBorders monocle
+                                 -- ||| floats
+                                 -- ||| noBorders tabs
+                                 -- ||| grid
+                                 -- ||| spirals
+                                 -- ||| threeCol
+                                 -- ||| threeRow
+                                 -- ||| tallAccordion
+                                 -- ||| wideAccordion
+
+tiled   = Tall nmaster delta ratio
+nmaster = 1
+ratio   = 1/2
+delta   = 3/100
+
 
 -- myWorkspaces = [" 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 "]
 myWorkspaces = [" dev ", " www ", " sys ", " doc ", " vbox ", " chat ", " mus ", " vid ", " gfx "]
@@ -456,9 +475,11 @@ myKeys =
     -- wallpapers directory; then in sxiv, type 'C-x x' to set the wallpaper that you
     -- choose.  Or, type 'SUPER+F2' to set a random wallpaper.
         -- , ("M-<F1>", spawn "sxiv -r -q -t -o /usr/share/backgrounds/dtos-backgrounds/*")
-        , ("M-<F2>", spawn "find /usr/share/backgrounds/nature-wallpapers/ -type f | shuf -n 1 | xargs xwallpaper --stretch")
-        , ("M-<F3>", spawn "toggle_allacritty_opacity")
-        , ("M-<F4>", spawn "toggle_xmobar")
+        , ("M-<F1>", spawn "find /usr/share/backgrounds/nature-wallpapers/ -type f | shuf -n 1 | xargs xwallpaper --stretch")
+        , ("M-<F2>", spawn "toggle_allacritty_opacity")
+	, ("M-<F3>", spawn "toggle_xmobar")
+        -- , ("M-<F4>", sendMessage(T.Toggle "")) -- toggles to layout "tight"
+
 
     -- KB_GROUP Controls for mocp music player (SUPER-u followed by a key)
         , ("M-u p", spawn "mocp --play")
