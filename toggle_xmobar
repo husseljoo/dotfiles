@@ -1,0 +1,12 @@
+#!/bin/bash
+
+FILE="xmobarrc"
+FILE2="xmobarrcX"
+
+if [ -e ~/.config/xmobar/"$FILE" ]; then
+  mv ~/.config/xmobar/xmobarrc ~/.config/xmobar/xmobarrcX
+  xmonad --recompile && xmonad --restart
+elif [ -e ~/.config/xmobar/"$FILE2" ]; then
+  mv ~/.config/xmobar/xmobarrcX ~/.config/xmobar/xmobarrc
+  xmonad --recompile && xmonad --restart
+fi

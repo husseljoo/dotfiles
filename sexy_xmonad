@@ -110,6 +110,7 @@ myStartupHook = do
     --uncomment to set a random wallpaper on login
     spawn "find /usr/share/backgrounds/nature-wallpapers/ -type f | shuf -n 1 | xargs xwallpaper --stretch"
     spawnOnce "firefox-developer-edition"
+    spawnOnce "alacritty"
 
     -- spawnOnce "~/.fehbg &"  -- set last saved feh wallpaper
     -- spawnOnce "feh --randomize --bg-fill ~/wallpapers/*"  -- feh set random wallpaper
@@ -457,6 +458,7 @@ myKeys =
         -- , ("M-<F1>", spawn "sxiv -r -q -t -o /usr/share/backgrounds/dtos-backgrounds/*")
         , ("M-<F2>", spawn "find /usr/share/backgrounds/nature-wallpapers/ -type f | shuf -n 1 | xargs xwallpaper --stretch")
         , ("M-<F3>", spawn "toggle_allacritty_opacity")
+        , ("M-<F4>", spawn "toggle_xmobar")
 
     -- KB_GROUP Controls for mocp music player (SUPER-u followed by a key)
         , ("M-u p", spawn "mocp --play")
