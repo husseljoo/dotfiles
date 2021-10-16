@@ -1,10 +1,6 @@
-" copy to clipboard with ctrl+c
-map <C-c> "+y
-
 " Fish doesn't play all that well with others
 set shell=/bin/bash
 let mapleader = "\<Space>"
-" /bin/bash: line 1: xsel: command not found
 
 " =============================================================================
 " # PLUGINS
@@ -13,7 +9,8 @@ let mapleader = "\<Space>"
 set nocompatible
 filetype off
 " set rtp+=~/dev/others/base16/templates/vim/
-call plug#begin()
+call plug#begin('~/.vim/plugged')
+" call plug#begin()
 
 Plug 'tpope/vim-commentary'
 Plug 'morhetz/gruvbox'
@@ -35,10 +32,16 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 " Semantic language support
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/lsp_extensions.nvim'
-Plug 'nvim-lua/completion-nvim'
+" Plug 'nvim-lua/completion-nvim'
+
+"new autocomplete?
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/vim-vsnip'
 
 " Syntactic language support
 Plug 'cespare/vim-toml'
@@ -50,17 +53,39 @@ Plug 'dag/vim-fish'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'lervag/vimtex'
+" Plug 'xuhdev/vim-latex-live-preview'
 
 Plug 'preservim/nerdtree'
 Plug 'kabouzeid/nvim-lspinstall'
 
 Plug 'pangloss/vim-javascript'
 Plug 'tomasiser/vim-code-dark'
+
 "Auto-save
 Plug '907th/vim-auto-save'
 Plug 'joereynolds/sql-lint'
 
+"Haskell
+Plug 'neovimhaskell/haskell-vim'
+Plug 'alx741/vim-hindent'
+
+"Formatter
+Plug 'mhartington/formatter.nvim'
+
+"Diagnostics
+" Plug 'folke/lsp-colors.nvim'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'folke/trouble.nvim'
+
 call plug#end()
+let g:hindent_on_save = 1
+
+" let g:livepreview_previewer = 'open -a zathura'
+autocmd Filetype tex setl updatetime=1
+
+
+" copy to clipboard with ctrl+c
+map <C-c> "+y
 
 nnoremap <Leader><space> :noh<CR>
 
@@ -68,8 +93,6 @@ nmap <C-_> gcc
 inoremap <C-_> gcc 
 vnoremap <C-_> gcc 
 nnoremap <C-_> gcc 
-
-" map <C-a> ggVG
 
 
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -84,7 +107,7 @@ map <F6> :w \| :! zathura $(echo % \| sed 's/tex$/pdf/') & disown <CR>
 
 
 nnoremap \<Space> :noh<CR>
-nnoremap <F9> :!%:p<CR>
+" nnoremap <F9> :!%:p<CR>
 nnoremap <leader>r :!%:p<CR>
 
 let g:tex_flavor='latex'
@@ -112,12 +135,8 @@ let base16colorspace=256
 " let g:base16_shell_path="~/dev/others/base16/templates/shell/scripts/"
 " colorscheme base16-gruvbox-dark-hard
 syntax on
-hi Normal ctermbg=NONE
-" Brighter comments
-" call Base16hi("Comment", g:base16_gui09, "", g:base16_cterm09, "", "", "")
-" https://github.com/nvim-lua/lsp_extensions.nvim/issues/21
-" call Base16hi("CocHintSign", g:base16_gui03, "", g:base16_cterm03, "", "", "")
 
+hi Normal ctermbg=NONE
 " LSP configuration
 lua << END
 local lspconfig = require('lspconfig')
@@ -126,7 +145,52 @@ local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
 local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
 --Enable completion triggered by <c-x><c-o>
-buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+--buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+
+-- Setup nvim-cmp.
+  local cmp = require'cmp'
+
+  cmp.setup({
+    snippet = {
+      expand = function(args)
+        -- For `vsnip` user.
+        vim.fn["vsnip#anonymous"](args.body)
+
+        -- For `luasnip` user.
+        -- require('luasnip').lsp_expand(args.body)
+
+        -- For `ultisnips` user.
+        -- vim.fn["UltiSnips#Anon"](args.body)
+      end,
+    },
+    mapping = {
+      ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.close(),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    },
+    sources = {
+      { name = 'nvim_lsp' },
+      { name = 'buffer' },
+    }
+  })
+
+  -- Setup lspconfig.
+-- require('lspconfig')['denols'].setup {
+--   capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+-- }
+
+--local servers = { "rust_analyzer", "pyright", "tsserver" }
+--for _, lsp in ipairs(servers) do
+--lspconfig[lsp].setup {
+--    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+--}
+--end
+
+
+
 
 -- Mappings.
 local opts = { noremap=true, silent=true }
@@ -148,36 +212,18 @@ buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>',
 buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 
 -- Forward to other plugins
-require'completion'.on_attach(client)
+--require'completion'.on_attach(client)
 end
 
-local servers = { "rust_analyzer", "pyright", "tsserver", "sqls"}
+--tsserver replaced with denols for now
+local servers = { "rust_analyzer", "pyright",  "vimls", "ccls", "hls", "tsserver"}
 for _, lsp in ipairs(servers) do
-lspconfig[lsp].setup {
-on_attach = on_attach,
-flags = {
+lspconfig[lsp].setup { on_attach = on_attach, flags = {
 debounce_text_changes = 150,
 }
 }
 end
-
---require'lspconfig'.sqls.setup{
---  settings = {
---    sqls = {
---      connections = {
---        {
---          driver = 'mysql',
---          dataSourceName = 'root:root@tcp(127.0.0.1:13306)/ItWorx',
---        },
---        {
---          driver = 'postgresql',
---          dataSourceName = 'host=127.0.0.1 port=15432 user=postgres password=mysecretpassword1234 dbname=dvdrental sslmode=disable',
---        },
---      },
---    },
---  },
---}
-
+--require'lspconfig'.denols.setup{ lint=true }
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -186,7 +232,61 @@ signs = true,
 update_in_insert = tre,
 }
 )
+-- Prettier function for formatter
+local prettier = function()
+  return {
+    exe = "prettier",
+    args = { "--stdin-filepath", vim.api.nvim_buf_get_name(0), "--double-quote" },
+    stdin = true,
+  }
+end
+
+-- Prettier function for formatter for Python
+local black = function()
+  return {
+    exe = "black",
+    --args = { "--stdin-filepath", vim.api.nvim_buf_get_name(0), "--double-quote" },
+    stdin = false,
+  }
+end
+
+require("formatter").setup()
+vim.api.nvim_command[[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]]
+
+require("formatter").setup({
+  logging = false,
+  filetype = {
+    --javascript = { prettier },
+    json = { prettier },
+    --typescript = { prettier },
+    html = { prettier },
+    css = { prettier },
+    scss = { prettier },
+    markdown = { prettier },
+    python = {black},
+  },
+})
+
+
+--Enable formatter for Neovim
+vim.api.nvim_exec([[
+augroup FormatAutogroup
+  autocmd!
+  autocmd BufWritePost *.py,*.lua FormatWrite
+augroup END
+]], true)
+
+--require("lsp-colors").setup({
+--  Error = "#db4b4b",
+--  Warning = "#e0af68",
+--  Information = "#0db9d7",
+--  Hint = "#10B981"
+--})
+
+require("trouble").setup{}
+
 END
+
 
 " Plugin settings
 let g:secure_modelines_allowed_items = [
@@ -266,11 +366,6 @@ set cmdheight=2
 " You will have bad experience for diagnostic messages when it's default 4000.
 set updatetime=300
 
-" Golang
-let g:go_play_open_browser = 0
-let g:go_fmt_fail_silently = 1
-let g:go_fmt_command = "goimports"
-let g:go_bin_path = expand("~/dev/go/bin")
 
 " =============================================================================
 " # Editor settings
@@ -467,15 +562,11 @@ inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " use <Tab> as trigger keys
-imap <Tab> <Plug>(completion_smart_tab)
-imap <S-Tab> <Plug>(completion_smart_s_tab)
+" imap <Tab> <Plug>(completion_smart_tab)
+" imap <S-Tab> <Plug>(completion_smart_s_tab)
 
 " Enable type inlay hints
 autocmd CursorHold,CursorHoldI *.rs :lua require'lsp_extensions'.inlay_hints{ only_current_line = true }
-
-" Use <TAB> for selections ranges.
-" nmap <silent> <TAB> <Plug>(coc-range-select)
-" xmap <silent> <TAB> <Plug>(coc-range-select)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -540,26 +631,6 @@ if has('nvim')
 	runtime! plugin/python_setup.vim
 endif
 
-" let g:gruvbox_contrast_dark = 'hard'
-" if exists('+termguicolors')
-"     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-"     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-" endif
-" let g:gruvbox_invert_selection='0'
-" set background=dark
-" hl PmenuSel guifg=Red ctermfg=Red
-" hghtighlight Visual cterm=NONE ctermbg=76 ctermfg=16 gui=NONE guibg=#5fd700 guifg=#000000
-" highlight StatusLine cterm=NONE ctermbg=231 ctermfg=160 gui=NONE guibg=#ffffff guifg=#d70000
-" highlight Normal cterm=NONE ctermbg=17 gui=NONE guibg=#00005f
-" highlight NonText cterm=NONE ctermbg=17 gui=NONE guibg=#00005f
-
-" highlight Pmenu ctermbg=gray guibg=gray
-" highlight Pmenu cterm=NONE ctermbg=17 gui=NONE guibg=#00005f
-
-"Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
-"If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
-"(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
-
 if (empty($TMUX))
   if (has("nvim"))
     "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
@@ -572,15 +643,33 @@ if (empty($TMUX))
     set termguicolors
   endif
 endif
-" let g:gruvbox_contrast_dark = 'hard'
-"colorscheme gruvbox
+ " let g:gruvbox_contrast_dark = 'hard'
+" colorscheme gruvbox
+" let g:airline_theme = 'codedark'
 colorscheme codedark
-let g:airline_theme = 'codedark'
+colorscheme gruvbox
+" colorscheme base16-gruvbox-dark-hard
 
-"colorscheme base16-gruvbox-dark-hard
+"haskell
+let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
+let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
+let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
+let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
+let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
+let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
+let g:haskell_classic_highlighting = 1
+
+
 highlight LspDiagnosticsVirtualTextError guifg=Red ctermfg=Red
 highlight LspDiagnosticsVirtualTextWarning guifg=Yellow ctermfg=Yellow
-" highlight LspDiagnosticsVirtualTextHint guifg=Blue ctermfg=Blue
+highlight LspDiagnosticsSignError guifg=BrightRed
+
+highlight LspDiagnosticsDefaultError guifg=BrightRed
+highlight LspDiagnosticsDefaultWarning guifg=BrightYellow
+
+" highlight LspDiagnosticsDefaultError guifg=BrightRed
+
 "find visually selected word in file // then n normally
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 
@@ -597,10 +686,47 @@ vnoremap <A-k> :m '<-2<CR>gv=gv
 
 autocmd FileType javascript nnoremap <F9> :w<Enter> :! node %<Enter>
 autocmd FileType javascript nnoremap <F10> :w<Enter> :! npm run app<Enter>
+
 autocmd FileType python nnoremap <F9> :w<Enter> :! python %<Enter>
+
 autocmd FileType rust nnoremap <F9> :w<Enter> :! cargo run<Enter>
 autocmd FileType rust nmap \p oprintln!("");<Esc>$F"i
 autocmd FileType rust nmap \P Oprintln!("");<Esc>$F"i
 autocmd FileType rust nmap \P Oprintln!("");<Esc>$F"i
-" autocmd FileType rust nmap \p oprintln!("{}", );<Esc>
 
+autocmd FileType vim nnoremap <F9> :w<Enter> :source %<Enter>
+
+" autocmd FileType haskell nnoremap <F9> :w<Enter> :! ~/run_haskell.sh %<Enter>
+" au Filetype haskell source ~/.config/nvim/scripts/spacetab2.vim
+
+
+let t:is_transparent = 0                                                                        
+function! Toggle_transparent_background()                                                       
+  if t:is_transparent == 0                                                                      
+    hi Normal guibg=#111111 ctermbg=black                                                       
+    let t:is_transparent = 1                                                                    
+  else                                                                                          
+    hi Normal guibg=NONE ctermbg=NONE                                                           
+    let t:is_transparent = 0                                                                    
+  endif                                                                                         
+endfunction                                                                                     
+nnoremap <F1> :call Toggle_transparent_background()<CR>  
+
+" " Toggle background transparency
+" let t:isTransparent = 0
+" function! BGToggleTransparency()
+"   if t:isTransparent == 0
+"     hi Normal guibg=#111111 ctermbg=black
+"     set background=dark
+"     let t:isTransparent = 1
+"   else
+"     hi Normal guibg=NONE ctermbg=NONE
+"     let t:isTransparent = 0
+"   endif
+" endfunction
+" nnoremap <F2> :call BGToggleTransparency()<CR>  
+
+nnoremap <silent> <F10>     :CocCommand fzf-preview.ProjectFiles <CR>
+" lua require('formatter').setup(...)
+" Provided by setup function
+nnoremap <silent> <leader>f :Format<CR>
