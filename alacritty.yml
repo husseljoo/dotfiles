@@ -1,3 +1,4 @@
+background_opacity: 0.7
 font:
   #  normal:
   #    family: monospace
@@ -15,7 +16,7 @@ font:
   #    family: monospace
   #    style: Bold Italic
   #
-  size: 16
+  size: 9
 
     #colors:
     #  # Default colors

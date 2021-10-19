@@ -57,6 +57,8 @@ Plug 'lervag/vimtex'
 
 Plug 'preservim/nerdtree'
 Plug 'kabouzeid/nvim-lspinstall'
+" Plug 'ryanoasis/vim-devicons'
+" Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 Plug 'pangloss/vim-javascript'
 Plug 'tomasiser/vim-code-dark'
@@ -76,6 +78,9 @@ Plug 'mhartington/formatter.nvim'
 " Plug 'folke/lsp-colors.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'folke/trouble.nvim'
+
+"Javascript
+Plug 'turbio/bracey.vim', {'do': 'npm install --prefix server'}
 
 call plug#end()
 let g:hindent_on_save = 1
@@ -216,13 +221,40 @@ buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 end
 
 --tsserver replaced with denols for now
-local servers = { "rust_analyzer", "pyright",  "vimls", "ccls", "hls", "tsserver"}
+local servers = { "rust_analyzer", "pyright",  "vimls", "ccls", "hls"}
 for _, lsp in ipairs(servers) do
 lspconfig[lsp].setup { on_attach = on_attach, flags = {
 debounce_text_changes = 150,
 }
 }
 end
+
+lspconfig.denols.setup {
+  on_attach = on_attach,
+  flags = {
+    debounce_text_changes = 150,
+    config = './deno.json',
+  },
+  filetypes = {
+    'javascript',
+    'javascriptreact',
+    'javascript.jsx',
+    'typescript',
+    'typescriptreact',
+    'typescript.tsx',
+    'markdown',
+  },
+  init_options = {
+    config = '/home/husseljo/.config/nvim/deno.json',
+    lint = true,
+  },
+}
+
+--require('lspconfig')['denols'].setup {
+--  capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+--  lint=true,
+--}
+
 --require'lspconfig'.denols.setup{ lint=true }
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
@@ -272,7 +304,7 @@ require("formatter").setup({
 vim.api.nvim_exec([[
 augroup FormatAutogroup
   autocmd!
-  autocmd BufWritePost *.py,*.lua FormatWrite
+  autocmd BufWritePost *.py,*.lua,*.html,*.css,*.json,*.md FormatWrite
 augroup END
 ]], true)
 
@@ -684,49 +716,61 @@ inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
 
+"Node
 autocmd FileType javascript nnoremap <F9> :w<Enter> :! node %<Enter>
 autocmd FileType javascript nnoremap <F10> :w<Enter> :! npm run app<Enter>
+" autocmd FileType javascript nnoremap <F10> :w<Enter> :Bracey <Enter>
 
+"Python
 autocmd FileType python nnoremap <F9> :w<Enter> :! python %<Enter>
 
+"Rust
 autocmd FileType rust nnoremap <F9> :w<Enter> :! cargo run<Enter>
 autocmd FileType rust nmap \p oprintln!("");<Esc>$F"i
 autocmd FileType rust nmap \P Oprintln!("");<Esc>$F"i
 autocmd FileType rust nmap \P Oprintln!("");<Esc>$F"i
 
+"Vim
 autocmd FileType vim nnoremap <F9> :w<Enter> :source %<Enter>
+
+"Bash
+autocmd FileType bash nnoremap <F9> :w !bash % <Enter>
+
+"C++
+autocmd FileType cpp nnoremap <F10> :w <Enter> :call system('./run_opengl') <Enter>
+
+"HTML
+"include html template on buffer start
+autocmd BufNewFile *.html 0r ~/.vim/templates/skeleton.html
+autocmd BufRead,BufNewFile *.htm,*.html setlocal tabstop=2 shiftwidth=2 softtabstop=2
+autocmd FileType html nnoremap <F10> :w<Enter> :Bracey <Enter><Enter>
+autocmd FileType html nnoremap <F9> :w<Enter> :BraceyReload <Enter>
+autocmd FileType html nnoremap <F5> :w<Enter> :BraceyReload <Enter>
+
+"Colorschemes
+" autocmd BufEnter *.html,*.css,*.js colorscheme codedark
 
 " autocmd FileType haskell nnoremap <F9> :w<Enter> :! ~/run_haskell.sh %<Enter>
 " au Filetype haskell source ~/.config/nvim/scripts/spacetab2.vim
 
 
-let t:is_transparent = 0                                                                        
-function! Toggle_transparent_background()                                                       
-  if t:is_transparent == 0                                                                      
-    hi Normal guibg=#111111 ctermbg=black                                                       
-    let t:is_transparent = 1                                                                    
-  else                                                                                          
-    hi Normal guibg=NONE ctermbg=NONE                                                           
-    let t:is_transparent = 0                                                                    
-  endif                                                                                         
-endfunction                                                                                     
-nnoremap <F1> :call Toggle_transparent_background()<CR>  
+" Toggle background transparency
+let t:isTransparent = 0
+function! Toggle_transparent_background()
+  if t:isTransparent == 0
+    hi Normal guibg=#111111 ctermbg=black
+    set background=dark
+    let t:isTransparent = 1
+  else
+    hi Normal guibg=NONE ctermbg=NONE
+    let t:isTransparent = 0
+  endif
+endfunction
+nnoremap <silent> <F1> :call Toggle_transparent_background()<CR>  
 
-" " Toggle background transparency
-" let t:isTransparent = 0
-" function! BGToggleTransparency()
-"   if t:isTransparent == 0
-"     hi Normal guibg=#111111 ctermbg=black
-"     set background=dark
-"     let t:isTransparent = 1
-"   else
-"     hi Normal guibg=NONE ctermbg=NONE
-"     let t:isTransparent = 0
-"   endif
-" endfunction
-" nnoremap <F2> :call BGToggleTransparency()<CR>  
-
-nnoremap <silent> <F10>     :CocCommand fzf-preview.ProjectFiles <CR>
+nnoremap <silent> <F11>     :CocCommand fzf-preview.ProjectFiles <CR>
 " lua require('formatter').setup(...)
 " Provided by setup function
-nnoremap <silent> <leader>f :Format<CR>
+" nnoremap <silent> <leader>f :Format<CR>
+
+colorscheme codedark
