@@ -82,6 +82,20 @@ Plug 'folke/trouble.nvim'
 "Javascript
 Plug 'turbio/bracey.vim', {'do': 'npm install --prefix server'}
 
+"Emmet
+Plug 'mattn/emmet-vim'
+
+"Surround
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-fugitive'
+
+"emf-langserver
+" Plug 'mattn/efm-langserver'
+
+"multiple cursors
+Plug 'mg979/vim-visual-multi'
+
 call plug#end()
 let g:hindent_on_save = 1
 
@@ -146,6 +160,7 @@ hi Normal ctermbg=NONE
 lua << END
 local lspconfig = require('lspconfig')
 local on_attach = function(client, bufnr)
+vim.api.nvim_command[[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]]
 local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
 local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
@@ -221,7 +236,7 @@ buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 end
 
 --tsserver replaced with denols for now
-local servers = { "rust_analyzer", "pyright",  "vimls", "ccls", "hls"}
+local servers = { "rust_analyzer", "pyright",  "vimls", "ccls", "hls", "tsserver", "gopls"}
 for _, lsp in ipairs(servers) do
 lspconfig[lsp].setup { on_attach = on_attach, flags = {
 debounce_text_changes = 150,
@@ -229,26 +244,60 @@ debounce_text_changes = 150,
 }
 end
 
-lspconfig.denols.setup {
-  on_attach = on_attach,
-  flags = {
-    debounce_text_changes = 150,
-    config = './deno.json',
-  },
-  filetypes = {
-    'javascript',
-    'javascriptreact',
-    'javascript.jsx',
-    'typescript',
-    'typescriptreact',
-    'typescript.tsx',
-    'markdown',
-  },
-  init_options = {
-    config = '/home/husseljo/.config/nvim/deno.json',
-    lint = true,
-  },
-}
+
+
+--lspconfig.denols.setup {
+--  on_attach = on_attach,
+--  flags = {
+--    debounce_text_changes = 150,
+--    config = './deno.json',
+--  },
+--  filetypes = {
+--    'javascript',
+--    'javascriptreact',
+--    'javascript.jsx',
+--    'typescript',
+--    'typescriptreact',
+--    'typescript.tsx',
+--    'markdown',
+--  },
+--  init_options = {
+--    config = '/home/husseljo/.config/nvim/deno.json',
+--    lint = true,
+--  },
+--}
+
+--function file_exists(name)
+--    local f = io.open(name, 'r')
+--    if f ~= nil then io.close(f) return true else return false end
+--end
+--
+--if file_exists(os.getenv('PWD')..'/package.json') then
+--    lspconfig.tsserver.setup {}
+--else
+--lspconfig.denols.setup {
+--  on_attach = on_attach,
+--  flags = {
+--    debounce_text_changes = 150,
+--    config = './deno.json',
+--  },
+--  filetypes = {
+--    'javascript',
+--    'javascriptreact',
+--    'javascript.jsx',
+--    'typescript',
+--    'typescriptreact',
+--    'typescript.tsx',
+--    'markdown',
+--  },
+--  init_options = {
+--    config = '/home/husseljo/.config/nvim/deno.json',
+--    lint = true,
+--  },
+--}
+--end
+
+
 
 --require('lspconfig')['denols'].setup {
 --  capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
@@ -282,8 +331,7 @@ local black = function()
   }
 end
 
-require("formatter").setup()
-vim.api.nvim_command[[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]]
+--vim.api.nvim_command[[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]]
 
 require("formatter").setup({
   logging = false,
@@ -304,8 +352,8 @@ require("formatter").setup({
 vim.api.nvim_exec([[
 augroup FormatAutogroup
   autocmd!
-  autocmd BufWritePost *.py,*.lua,*.html,*.css,*.json,*.md FormatWrite
-augroup END
+	  autocmd BufWritePost *.py,*.lua,*.html,*.css,*.json,*.md FormatWrite
+	augroup END
 ]], true)
 
 --require("lsp-colors").setup({
@@ -675,12 +723,12 @@ if (empty($TMUX))
     set termguicolors
   endif
 endif
- " let g:gruvbox_contrast_dark = 'hard'
-" colorscheme gruvbox
+
+
 " let g:airline_theme = 'codedark'
-colorscheme codedark
+"Change colorscheme here
 colorscheme gruvbox
-" colorscheme base16-gruvbox-dark-hard
+" colorscheme codedark
 
 "haskell
 let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
@@ -717,9 +765,9 @@ vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
 
 "Node
-autocmd FileType javascript nnoremap <F9> :w<Enter> :! node %<Enter>
 autocmd FileType javascript nnoremap <F10> :w<Enter> :! npm run app<Enter>
-" autocmd FileType javascript nnoremap <F10> :w<Enter> :Bracey <Enter>
+autocmd FileType javascript nnoremap <F8> :BraceyReload <Enter>
+autocmd FileType javascript nnoremap <F9> :w<Enter> :! node %<Enter>
 
 "Python
 autocmd FileType python nnoremap <F9> :w<Enter> :! python %<Enter>
@@ -737,15 +785,15 @@ autocmd FileType vim nnoremap <F9> :w<Enter> :source %<Enter>
 autocmd FileType bash nnoremap <F9> :w !bash % <Enter>
 
 "C++
-autocmd FileType cpp nnoremap <F10> :w <Enter> :call system('./run_opengl') <Enter>
+autocmd FileType cpp nnoremap <F10> :w <Enter> :call system('./run') <Enter>
 
 "HTML
 "include html template on buffer start
 autocmd BufNewFile *.html 0r ~/.vim/templates/skeleton.html
 autocmd BufRead,BufNewFile *.htm,*.html setlocal tabstop=2 shiftwidth=2 softtabstop=2
 autocmd FileType html nnoremap <F10> :w<Enter> :Bracey <Enter><Enter>
-autocmd FileType html nnoremap <F9> :w<Enter> :BraceyReload <Enter>
-autocmd FileType html nnoremap <F5> :w<Enter> :BraceyReload <Enter>
+autocmd FileType html nnoremap <F9> :BraceyReload <Enter>
+autocmd FileType html nnoremap <F5> :BraceyReload <Enter>
 
 "Colorschemes
 " autocmd BufEnter *.html,*.css,*.js colorscheme codedark
@@ -772,5 +820,3 @@ nnoremap <silent> <F11>     :CocCommand fzf-preview.ProjectFiles <CR>
 " lua require('formatter').setup(...)
 " Provided by setup function
 " nnoremap <silent> <leader>f :Format<CR>
-
-colorscheme codedark
