@@ -479,6 +479,7 @@ myKeys =
         , ("M-<F1>", spawn "find /usr/share/backgrounds/husseljo-wallpapers/ -type f | shuf -n 1 | xargs xwallpaper --stretch")
         , ("M-<F2>", spawn "toggle_allacritty_opacity")
 	, ("M-<F3>", spawn "toggle_xmobar")
+	, ("M1-<Page_Up>", spawn "kazam --area")
         -- , ("M-<F4>", sendMessage(T.Toggle "")) -- toggles to layout "tight"
 
 
