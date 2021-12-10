@@ -8,11 +8,8 @@ else
   file_path="$BASE/$1"
   echo "FILE PATH IS: $file_path"
   echo "compiling to arduino"
-  arduino-cli compile --fqbn arduino:avr:uno $file_path
-  echo "compiled successfully to Arduino!"
+  arduino-cli compile --fqbn arduino:avr:uno $1
+  echo "uploading to arduino"
+  arduino-cli upload -p /dev/ttyACM0 --fqbn arduino:avr:uno $1
+  putty /dev/ttyACM0 -serial -sercfg 9600,8,n,1,N
 fi
-
-# ard-compile // compile sketch only
-# ard-upload // upload sketch only
-# ard-serial // open a serial monitor
-

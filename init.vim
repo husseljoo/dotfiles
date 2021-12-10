@@ -799,8 +799,8 @@ vnoremap <A-k> :m '<-2<CR>gv=gv
 
 
 "Arduino
-autocmd FileType arduino nnoremap <F9> :wa<Enter> :! arduinoCompile %<Enter>
-autocmd FileType arduino nnoremap <F10> :wa<Enter> :! arduinoUpload %<Enter>
+autocmd FileType arduino nnoremap <F9> :wa<Enter> :! arduinoCompileEditor %<Enter>
+autocmd FileType arduino nnoremap <F10> :wa<Enter> :! arduinoUploadEditor %<Enter>
 
 "Node
 autocmd FileType javascript nnoremap <F10> :wa<Enter> :! npm run app<Enter>

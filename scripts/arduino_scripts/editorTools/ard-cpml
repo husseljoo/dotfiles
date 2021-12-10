@@ -8,7 +8,7 @@ else
   file_path="$BASE/$1"
   echo "FILE PATH IS: $file_path"
   echo "compiling to arduino"
-  arduino-cli compile --fqbn arduino:avr:uno $file_path
+  arduino-cli compile --fqbn arduino:avr:uno $1
   echo "compiled successfully to Arduino!"
 fi
 
