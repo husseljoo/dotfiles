@@ -1,0 +1,10 @@
+#!/bin/bash
+
+BASE="/home/husseljo/Arduino/Sketches"
+Balance=900
+if [ $# -eq 0 ]; then   
+  echo "$BASE/myFirstSketch"
+else   
+  file_path="$BASE/$1"
+  echo "$file_path"
+fi

@@ -1,7 +1,7 @@
 " Fish doesn't play all that well with others
 set shell=/bin/bash
+let $BASH_ENV = "~/.vim_bash_env"
 let mapleader = "\<Space>"
-
 " =============================================================================
 " # PLUGINS
 " =============================================================================
@@ -94,7 +94,26 @@ Plug 'tpope/vim-fugitive'
 " Plug 'mattn/efm-langserver'
 
 "multiple cursors
-Plug 'mg979/vim-visual-multi'
+" Plug 'mg979/vim-visual-multi'
+"Colorschemes
+Plug 'sjl/badwolf'
+Plug 'sainnhe/sonokai'
+"Assembly
+Plug 'harenome/vim-mipssyntax'
+"vimwiki
+Plug 'vimwiki/vimwiki'
+"JSX
+Plug 'MaxMEllon/vim-jsx-pretty'
+"Git
+Plug 'christoomey/vim-conflicted'
+"Searchbox
+Plug 'MunifTanjim/nui.nvim'
+Plug 'VonHeikemen/searchbox.nvim'
+Plug 'sudar/vim-arduino-syntax'
+
+
+"git diff
+" Plug 'airblade/vim-gitgutter'
 
 call plug#end()
 let g:hindent_on_save = 1
@@ -127,7 +146,7 @@ map <F6> :w \| :! zathura $(echo % \| sed 's/tex$/pdf/') & disown <CR>
 
 nnoremap \<Space> :noh<CR>
 " nnoremap <F9> :!%:p<CR>
-nnoremap <leader>r :!%:p<CR>
+" nnoremap <leader>r :!%:p<CR>
 
 let g:tex_flavor='latex'
 let g:vimtex_view_method='zathura'
@@ -152,7 +171,6 @@ endif
 set background=dark
 let base16colorspace=256
 " let g:base16_shell_path="~/dev/others/base16/templates/shell/scripts/"
-" colorscheme base16-gruvbox-dark-hard
 syntax on
 
 hi Normal ctermbg=NONE
@@ -236,7 +254,7 @@ buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 end
 
 --tsserver replaced with denols for now
-local servers = { "rust_analyzer", "pyright",  "vimls", "ccls", "hls", "tsserver", "gopls"}
+local servers = { "rust_analyzer", "pyright",  "vimls", "ccls", "hls", "gopls","tsserver"} 
 for _, lsp in ipairs(servers) do
 lspconfig[lsp].setup { on_attach = on_attach, flags = {
 debounce_text_changes = 150,
@@ -266,36 +284,6 @@ end
 --    lint = true,
 --  },
 --}
-
---function file_exists(name)
---    local f = io.open(name, 'r')
---    if f ~= nil then io.close(f) return true else return false end
---end
---
---if file_exists(os.getenv('PWD')..'/package.json') then
---    lspconfig.tsserver.setup {}
---else
---lspconfig.denols.setup {
---  on_attach = on_attach,
---  flags = {
---    debounce_text_changes = 150,
---    config = './deno.json',
---  },
---  filetypes = {
---    'javascript',
---    'javascriptreact',
---    'javascript.jsx',
---    'typescript',
---    'typescriptreact',
---    'typescript.tsx',
---    'markdown',
---  },
---  init_options = {
---    config = '/home/husseljo/.config/nvim/deno.json',
---    lint = true,
---  },
---}
---end
 
 
 
@@ -336,14 +324,23 @@ end
 require("formatter").setup({
   logging = false,
   filetype = {
-    --javascript = { prettier },
+    javascript = { prettier },
     json = { prettier },
-    --typescript = { prettier },
+    typescript = { prettier },
     html = { prettier },
     css = { prettier },
     scss = { prettier },
     markdown = { prettier },
     python = {black},
+    javascriptreact = {  
+        -- prettier
+        function()
+          return {
+            exe = "prettier",
+            args = {"--stdin-filepath", vim.api.nvim_buf_get_name(0)},
+            stdin = true
+          }
+        end},
   },
 })
 
@@ -352,9 +349,50 @@ require("formatter").setup({
 vim.api.nvim_exec([[
 augroup FormatAutogroup
   autocmd!
-	  autocmd BufWritePost *.py,*.lua,*.html,*.css,*.json,*.md FormatWrite
+	  autocmd BufWritePost *.js,*.py,*.lua,*.html,*.css,*.json,*.md FormatWrite
 	augroup END
 ]], true)
+
+
+--nvim_lsp.diagnosticls.setup {
+--	filetypes = {"javascript", "javascriptreact", "typescript", "typescriptreact", "css"},
+--	init_options = {
+--	filetypes = {
+--	javascript = "eslint",
+--	typescript = "eslint",
+--	javascriptreact = "eslint",
+--	typescriptreact = "eslint" },
+--	linters = {
+--		eslint = {
+--		sourceName = "eslint",
+--		command = "./node_modules/.bin/eslint",
+--		rootPatterns = {
+--		".eslitrc.js",
+--		"package.json"
+--	},
+--	debounce = 100,
+--	args = {
+--		"--cache",
+--		"--stdin",
+--		"--stdin-filename",
+--		"%filepath",
+--		"--format",
+--		"json"
+--	},
+--	parseJson = {
+--		errorsRoot = "[0].messages",
+--		line = "line",
+--		column = "column",
+--		endLine = "endLine",
+--		endColumn = "endColumn",
+--		message = "${message} [${ruleId}]",
+--		security = "severity"
+--	},
+--	securities = {
+--		[2] = "error",
+--		[1] = "warning"
+--		}
+--	} } }}
 
 --require("lsp-colors").setup({
 --  Error = "#db4b4b",
@@ -725,11 +763,6 @@ if (empty($TMUX))
 endif
 
 
-" let g:airline_theme = 'codedark'
-"Change colorscheme here
-colorscheme gruvbox
-" colorscheme codedark
-
 "haskell
 let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
 let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
@@ -764,28 +797,37 @@ inoremap <A-k> <Esc>:m .-2<CR>==gi
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
 
+
+"Arduino
+autocmd FileType arduino nnoremap <F9> :wa<Enter> :! arduinoCompile %<Enter>
+autocmd FileType arduino nnoremap <F10> :wa<Enter> :! arduinoUpload %<Enter>
+
 "Node
-autocmd FileType javascript nnoremap <F10> :w<Enter> :! npm run app<Enter>
+autocmd FileType javascript nnoremap <F10> :wa<Enter> :! npm run app<Enter>
 autocmd FileType javascript nnoremap <F8> :BraceyReload <Enter>
+" autocmd FileType javascript nnoremap <F9> :wa<Enter> :! node %<Enter>
 autocmd FileType javascript nnoremap <F9> :w<Enter> :! node %<Enter>
+autocmd FileType javascript nmap \p oconsole.log('')<Esc>$F'i
+autocmd FileType javascript nmap \P Oconsole.log('')<Esc>$F'i
 
 "Python
-autocmd FileType python nnoremap <F9> :w<Enter> :! python %<Enter>
+autocmd FileType python nnoremap <F9> :wa<Enter> :! python %<Enter>
 
 "Rust
-autocmd FileType rust nnoremap <F9> :w<Enter> :! cargo run<Enter>
+autocmd FileType rust nnoremap <F9> :wa<Enter> :! cargo run<Enter>
 autocmd FileType rust nmap \p oprintln!("");<Esc>$F"i
 autocmd FileType rust nmap \P Oprintln!("");<Esc>$F"i
 autocmd FileType rust nmap \P Oprintln!("");<Esc>$F"i
 
 "Vim
-autocmd FileType vim nnoremap <F9> :w<Enter> :source %<Enter>
+autocmd FileType vim nnoremap <F9> :wa<Enter> :source %<Enter>
 
 "Bash
-autocmd FileType bash nnoremap <F9> :w !bash % <Enter>
+autocmd FileType bash nnoremap <F9> :wa !bash % <Enter>
 
 "C++
-autocmd FileType cpp nnoremap <F10> :w <Enter> :call system('./run') <Enter>
+autocmd FileType cpp nnoremap <F9> :w <Enter> :call system('./run') <Enter>
+" autocmd FileType cpp nnoremap <F10> :wa <Enter> :call system('./run') <Enter>
 
 "HTML
 "include html template on buffer start
@@ -794,6 +836,10 @@ autocmd BufRead,BufNewFile *.htm,*.html setlocal tabstop=2 shiftwidth=2 softtabs
 autocmd FileType html nnoremap <F10> :w<Enter> :Bracey <Enter><Enter>
 autocmd FileType html nnoremap <F9> :BraceyReload <Enter>
 autocmd FileType html nnoremap <F5> :BraceyReload <Enter>
+
+""VimWiki
+"autocmd FileType wiki nnoremap <F9> :Vimwiki2HTML <Enter>
+
 
 "Colorschemes
 " autocmd BufEnter *.html,*.css,*.js colorscheme codedark
@@ -820,3 +866,29 @@ nnoremap <silent> <F11>     :CocCommand fzf-preview.ProjectFiles <CR>
 " lua require('formatter').setup(...)
 " Provided by setup function
 " nnoremap <silent> <leader>f :Format<CR>
+
+autocmd BufEnter * silent! lcd %:p:h
+set autochdir
+set viewoptions-=curdir
+
+" let g:airline_theme = 'codedark'
+"Change colorscheme here
+colorscheme codedark
+" colorscheme gruvbox
+" colorscheme sonokai
+" colorscheme gruvbox
+" colorscheme base16-gruvbox-dark-hard
+autocmd FileType c setlocal shiftwidth=2 tabstop=2
+autocmd FileType cpp setlocal shiftwidth=2 tabstop=2
+autocmd FileType *.ino setlocal shiftwidth=2 tabstop=2
+
+" colorscheme badwolf
+" highlight EndOfBuffer ctermfg=241 ctermbg=233 guifg=#666462 guibg=#1c1b1a
+" highlight LineNr ctermfg=241 ctermbg=233 guifg=#666462 guibg=#1c1b1a
+
+" highlight Cursor ctermfg=White ctermbg=Yellow cterm=bold guifg=white guibg=yellow gui=bold
+
+nnoremap <leader>s <cmd>lua require('searchbox').incsearch()<CR>
+vnoremap <leader>s <Esc><cmd>lua require("searchbox").incsearch({visual_mode = true})<CR>
+nnoremap <leader>r <cmd>lua require("searchbox").replace({exact = false})<CR>
+vnoremap <leader>r <cmd>lua require("searchbox").replace({exact = false, visual_mode = true})<CR>

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+BASE="/home/husseljo/Arduino/Sketches"
+Balance=900
+if [ $# -eq 0 ]; then   
+	echo "No sketch specified!"
+else   
+  file_path="$BASE/$1"
+  echo "FILE PATH IS: $file_path"
+  echo "uploading to arduino"
+  arduino-cli upload -p /dev/ttyACM0 --fqbn arduino:avr:uno $file_path
+  echo "uploaded successfully to Arduino!"
+fi
+
