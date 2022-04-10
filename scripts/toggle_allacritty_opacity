@@ -3,10 +3,15 @@
 last=`tail ~/.config/alacritty/alacritty.yml`
 word='opacity'
 
+line_count=`cat ~/.config/alacritty/alacritty.yml | wc -l`
+echo $line_count
+number="$(($line_count - 2))"
+
+
 if [[ "$last" == *"$word"* ]];
 then
   # opacity normal
-  head -n 45 ~/.config/alacritty/alacritty.yml > ~/.config/alacritty/temp.txt
+  head -n $number ~/.config/alacritty/alacritty.yml > ~/.config/alacritty/temp.txt
   mv ~/.config/alacritty/temp.txt ~/.config/alacritty/alacritty.yml
 else
   # opacity cool
