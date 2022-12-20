@@ -1,20 +1,19 @@
 #!/usr/bin/bash
 
-last=`tail ~/.config/alacritty/alacritty.yml`
+last=`tail -n 1 ~/.config/alacritty/alacritty.yml`
 word='opacity'
 
 line_count=`cat ~/.config/alacritty/alacritty.yml | wc -l`
 echo $line_count
-number="$(($line_count - 2))"
+number="$(($line_count - 1))"
 
 
-if [[ "$last" == *"$word"* ]];
+head -n $number ~/.config/alacritty/alacritty.yml > ~/.config/alacritty/temp.txt
+mv ~/.config/alacritty/temp.txt ~/.config/alacritty/alacritty.yml
+
+if [[ "$last" == *"opacity"* ]] && [[ "$last" == *"0.7"* ]];
 then
-  # opacity normal
-  head -n $number ~/.config/alacritty/alacritty.yml > ~/.config/alacritty/temp.txt
-  mv ~/.config/alacritty/temp.txt ~/.config/alacritty/alacritty.yml
+  echo " opacity: 1.0" >> ~/.config/alacritty/alacritty.yml
 else
-  # opacity cool
-  echo "window:" >> ~/.config/alacritty/alacritty.yml
   echo " opacity: 0.7" >> ~/.config/alacritty/alacritty.yml
 fi
