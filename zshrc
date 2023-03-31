@@ -177,8 +177,12 @@ alias downloads="cd ~/Downloads"
 alias ipy='/usr/bin/ipython3'
 
 zath(){
-  zathura $1 & disown
+ for file in "$@"
+    do
+        zathura "$file" & disown
+ done
 }
+
 alias za=zath
 
 alias vrc='nvim ~/.config/nvim/init.vim'
