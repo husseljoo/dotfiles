@@ -6,9 +6,10 @@ local run_commands = {
 	{ "rust", "cargo run" },
 	{ "dart", "dart run %" },
 	{ "cpp", "g++ % -o %:r && ./%:r<CR>:!rm %:r" },
+	{ "java", "javac % && java %:r<CR>:!rm %:r.class" },
 }
 local skeleton_langs = { "py", "dart", "html", "go", "cpp" }
-local base = "0r ~/.vim/templates/skeleton."
+local base = "~/.vim/templates/skeleton."
 
 local custom = {
 	{ "FileType", "cpp", "setlocal shiftwidth=2 tabstop=2" },
@@ -20,9 +21,14 @@ local custom = {
 local function generate_skeletons()
 	local res = {}
 	for _, lang in ipairs(skeleton_langs) do
-		local x = { "BufNewFile", "*." .. lang, base .. lang }
+		local x = { "BufNewFile", "*." .. lang, "0r " .. base .. lang }
 		table.insert(res, x)
 	end
+	return res
+end
+local function skeleton_java()
+	local fname = vim.fn.expand("%:t:r")
+	local res = string.format("0r %sjava | %%s/Whatever/%s/g", base, fname)
 	return res
 end
 
@@ -36,6 +42,8 @@ local function run_files()
 end
 
 local skeletons = generate_skeletons()
+table.insert(skeletons, { "BufNewFile", "*.java", skeleton_java() })
+
 local running_files = run_files()
 
 local printing = {
