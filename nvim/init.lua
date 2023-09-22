@@ -5,7 +5,7 @@ require("mappings")
 require("run_file_mappings")
 require("colorscheme_config")
 
-return require("packer").startup(function()
+return require("packer").startup(function(use)
 	use("wbthomason/packer.nvim")
 	use("neovim/nvim-lspconfig")
 	use("hrsh7th/nvim-cmp")
