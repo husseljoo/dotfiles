@@ -58,8 +58,12 @@ map("n", "<left>", "<nop>")
 map("n", "<right>", "<nop>")
 
 --left and right can switch buffers
-map("n", "<left>", ":bp<CR>")
-map("n", "<right>", ":bn<CR>")
+-- map("n", "<left>", ":bp<CR>")
+-- map("n", "<right>", ":bn<CR>")
+--integrate with barabar.nvim
+map("n", "<right>", ":BufferNext<CR>")
+map("n", "<left>", ":BufferPrevious<CR>")
+
 --toggle between 2 buffers
 map("n", "<leader>b", ":b#<CR>")
 map("n", "\\\\", ":b#<CR>")
