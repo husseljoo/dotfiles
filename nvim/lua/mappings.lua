@@ -63,6 +63,7 @@ map("n", "<right>", "<nop>")
 --integrate with barabar.nvim
 map("n", "<right>", ":BufferNext<CR>")
 map("n", "<left>", ":BufferPrevious<CR>")
+map("n", "<C-x>", ":BufferClose<CR>")
 
 --toggle between 2 buffers
 map("n", "<leader>b", ":b#<CR>")
@@ -73,11 +74,15 @@ map("n", "<leader><Space>", ":b#<CR>")
 map("n", "Y", "y$")
 
 --fuzzy finder
-map("n", "<c-P>", "<cmd>lua require('fzf-lua').files()<CR>")
-map("n", "<c-]>", ":FzfLua live_grep <CR>")
+map("n", "<C-P>", "<cmd>lua require('fzf-lua').files()<CR>")
+map("n", "<C-]>", ":FzfLua live_grep <CR>")
+map("n", "<C-f>", ":FzfLua live_grep <CR>")
 
 --toggle transparency
 map("n", "<F1>", ":TransparentToggle<CR>")
 
 -- setup mapping to call :LazyGit
 map("n", "<leader>g", ":LazyGit<CR>")
+
+-- toggle nvim-tree
+map("n", "<C-s>", ":NvimTreeToggle<CR>")
