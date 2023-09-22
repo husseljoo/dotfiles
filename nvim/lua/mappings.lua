@@ -86,3 +86,7 @@ map("n", "<leader>g", ":LazyGit<CR>")
 
 -- toggle nvim-tree
 map("n", "<C-s>", ":NvimTreeToggle<CR>")
+
+-- toggle terminal
+map("n", "<leader>t", ":ToggleTerm direction=float<CR>")
+map("n", "<C-t>", ":ToggleTerm size=17<CR>")

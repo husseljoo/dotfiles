@@ -4,7 +4,6 @@ require("core")
 require("mappings")
 require("run_file_mappings")
 require("colorscheme_config")
-require("plugin_setup")
 
 return require("packer").startup(function(use)
 	use("wbthomason/packer.nvim")
@@ -109,7 +108,22 @@ return require("packer").startup(function(use)
 		requires = {
 			"kyazdani42/nvim-web-devicons",
 		},
+		config = function()
+			require("nvim-tree").setup()
+		end,
 	})
-	use("lewis6991/gitsigns.nvim")
+	use({
+		"lewis6991/gitsigns.nvim",
+		config = function()
+			require("gitsigns").setup()
+		end,
+	})
 	use("romgrk/barbar.nvim")
+	use({
+		"akinsho/toggleterm.nvim",
+		tag = "*",
+		config = function()
+			require("toggleterm").setup()
+		end,
+	})
 end)
