@@ -4,6 +4,7 @@ require("core")
 require("mappings")
 require("run_file_mappings")
 require("colorscheme_config")
+require("plugin_setup")
 
 return require("packer").startup(function(use)
 	use("wbthomason/packer.nvim")
@@ -57,24 +58,12 @@ return require("packer").startup(function(use)
 	use("junegunn/fzf.vim")
 	use({
 		"ibhagwan/fzf-lua",
-		-- optional for icon support
 		requires = { "nvim-tree/nvim-web-devicons" },
 	})
 	--colorscheme plugins
 	use("ellisonleao/gruvbox.nvim")
-	-- use({ "catppuccin/nvim", as = "catppuccin" })
-	-- use("ray-x/aurora")
 	use("EdenEast/nightfox.nvim")
-	-- use("folke/lsp-colors.nvim")
 	use("xiyaowong/transparent.nvim")
-	--use 'tiagofumo/vim-nerdtree-syntax-highlight'
-	--use 'tpope/vim-fugitive'
-	--use 'morhetz/gruvbox'
-	--use {
-	--  'nvim-lualine/lualine.nvim',
-	--  requires = { 'kyazdani42/nvim-web-devicons', opt = true }
-	--}
-	-- install without yarn or npm
 	use({
 		"iamcco/markdown-preview.nvim",
 		run = function()
@@ -104,25 +93,21 @@ return require("packer").startup(function(use)
 		},
 	})
 	use({
+		"luukvbaal/nnn.nvim",
+		config = function()
+			require("nnn").setup()
+		end,
+	})
+	use({
 		"kdheepak/lazygit.nvim",
-		-- optional for floating window border decoration
 		requires = {
 			"nvim-lua/plenary.nvim",
 		},
 	})
-
-	-- use({
-	-- 	"akinsho/toggleterm.nvim",
-	-- 	tag = "*",
-	-- 	keys = {
-	-- 		{
-	-- 			"<leader>td",
-	-- 			"<cmd>ToggleTerm size=40 dir=~ direction=horizontal<CR>",
-	-- 			desc = "Open a horizontal terminal at the Desktop directory",
-	-- 		},
-	-- 	},
-	-- 	config = function()
-	-- 		require("toggleterm").setup()
-	-- 	end,
-	-- })
+	use({
+		"kyazdani42/nvim-tree.lua",
+		requires = {
+			"kyazdani42/nvim-web-devicons",
+		},
+	})
 end)
