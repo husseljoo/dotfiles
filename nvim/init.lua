@@ -103,6 +103,13 @@ return require("packer").startup(function(use)
 			"stevearc/dressing.nvim", -- optional for vim.ui.select
 		},
 	})
+	use({
+		"kdheepak/lazygit.nvim",
+		-- optional for floating window border decoration
+		requires = {
+			"nvim-lua/plenary.nvim",
+		},
+	})
 
 	-- use({
 	-- 	"akinsho/toggleterm.nvim",

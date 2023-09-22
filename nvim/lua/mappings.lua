@@ -74,3 +74,6 @@ map("n", "<c-]>", ":FzfLua live_grep <CR>")
 
 --toggle transparency
 map("n", "<F1>", ":TransparentToggle<CR>")
+
+-- setup mapping to call :LazyGit
+map("n", "<leader>g", ":LazyGit<CR>")
