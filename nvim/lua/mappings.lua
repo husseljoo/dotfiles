@@ -93,3 +93,4 @@ map("n", "<C-t>", ":ToggleTerm size=17<CR>")
 
 -- record macro in <F5>
 map("n", "<F5>", "@q")
+map("v", "<F5>", ":norm @q<CR>")
