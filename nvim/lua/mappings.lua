@@ -48,9 +48,9 @@ map("v", "<C-h>", ":nohlsearch<CR>")
 map("n", "<C-h>", ":nohlsearch<CR>")
 
 --suspend
-map("n", "<C-f>", ":sus<CR>")
-map("v", "<C-f>", ":sus<CR>")
-map("i", "<C-f>", ":sus<CR>")
+-- map("n", "<C-f>", ":sus<CR>")
+-- map("v", "<C-f>", ":sus<CR>")
+-- map("i", "<C-f>", ":sus<CR>")
 
 map("n", "<up>", "<nop>")
 map("n", "<down>", "<nop>")
@@ -90,3 +90,6 @@ map("n", "<C-s>", ":NvimTreeToggle<CR>")
 -- toggle terminal
 map("n", "<leader>t", ":ToggleTerm direction=float<CR>")
 map("n", "<C-t>", ":ToggleTerm size=17<CR>")
+
+-- record macro in <F5>
+map("n", "<F5>", "@q")
