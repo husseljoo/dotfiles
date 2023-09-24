@@ -63,7 +63,7 @@ map("n", "<right>", "<nop>")
 --integrate with barabar.nvim
 map("n", "<right>", ":BufferNext<CR>")
 map("n", "<left>", ":BufferPrevious<CR>")
-map("n", "<C-x>", ":BufferClose<CR>")
+map("n", "<leader>x", ":BufferClose<CR>")
 
 --toggle between 2 buffers
 map("n", "<leader>b", ":b#<CR>")
