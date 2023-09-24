@@ -75,7 +75,7 @@ map("n", "Y", "y$")
 
 --fuzzy finder
 map("n", "<C-P>", "<cmd>lua require('fzf-lua').files()<CR>")
-map("n", "<C-]>", ":FzfLua live_grep <CR>")
+map("n", "<C-]>", ":Gitsigns toggle_signs<CR>")
 map("n", "<C-f>", ":FzfLua live_grep <CR>")
 
 --toggle transparency
