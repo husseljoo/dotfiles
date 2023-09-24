@@ -70,14 +70,6 @@ return require("packer").startup(function(use)
 		end,
 	})
 	use({
-		"mfussenegger/nvim-jdtls",
-		config = function()
-			-- https://github.com/fitrh/init.nvim/blob/main/lua/plugin/jdtls/config.lua
-			require("plugin.jdtls.config").attach()
-		end,
-		module = "jdtls",
-	})
-	use({
 		"nvim-treesitter/nvim-treesitter",
 		run = function()
 			local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
@@ -126,4 +118,13 @@ return require("packer").startup(function(use)
 			require("toggleterm").setup()
 		end,
 	})
+	use("mfussenegger/nvim-jdtls")
+	-- use({
+	-- 	"mfussenegger/nvim-jdtls",
+	-- 	config = function()
+	-- 		-- https://github.com/fitrh/init.nvim/blob/main/lua/plugin/jdtls/config.lua
+	-- 		require("plugin.jdtls.config").attach()
+	-- 	end,
+	-- 	module = "jdtls",
+	-- })
 end)
