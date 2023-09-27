@@ -119,12 +119,22 @@ return require("packer").startup(function(use)
 		end,
 	})
 	use("mfussenegger/nvim-jdtls")
-	-- use({
-	-- 	"mfussenegger/nvim-jdtls",
-	-- 	config = function()
-	-- 		-- https://github.com/fitrh/init.nvim/blob/main/lua/plugin/jdtls/config.lua
-	-- 		require("plugin.jdtls.config").attach()
-	-- 	end,
-	-- 	module = "jdtls",
-	-- })
+	use({
+		"zbirenbaum/copilot.lua",
+		cmd = "Copilot",
+		event = "InsertEnter",
+		config = function()
+			require("copilot").setup({
+				suggestion = { enabled = false },
+				panel = { enabled = false },
+			})
+		end,
+	})
+	use({
+		"zbirenbaum/copilot-cmp",
+		after = { "copilot.lua" },
+		config = function()
+			require("copilot_cmp").setup()
+		end,
+	})
 end)

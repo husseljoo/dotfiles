@@ -28,9 +28,13 @@ cmp.setup({
 		["<S-Tab>"] = cmp_action.luasnip_shift_supertab(),
 	},
 	formatting = {
-		format = require("lspkind").cmp_format({ mode = "symbol" }),
+		format = require("lspkind").cmp_format({ mode = "symbol", max_width=50, symbol_map = { Copilot = "" } }),
 		maxwidth = 50, -- prevent the popup from showing more than provided characters
 		ellipsis_char = "...", --when maxwidth exceeded, truncated part shows ellipsis_char instead
+	},
+	sources = {
+		{ name = "copilot" },
+		{ name = "nvim_lsp" },
 	},
 })
 
