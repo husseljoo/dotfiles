@@ -31,6 +31,7 @@ map("n", "<C-c>", '"+y')
 map("v", "<C-c>", '"+y')
 
 map("n", "<leader>w", ":w<CR>")
+map("n", "<C-s>", ":w<CR>")
 map("n", "<leader>q", ":q!<CR>")
 map("n", "<leader>s", ":w<CR>:so %<CR>")
 map("n", "<leader>ev", ":vsplit $MYVIMRC<CR>")
@@ -85,7 +86,7 @@ map("n", "<F1>", ":TransparentToggle<CR>")
 map("n", "<leader>g", ":LazyGit<CR>")
 
 -- toggle nvim-tree
-map("n", "<C-s>", ":NvimTreeToggle<CR>")
+map("n", "<C-a>", ":NvimTreeToggle<CR>")
 
 -- toggle terminal
 map("n", "<leader>t", ":ToggleTerm direction=float<CR>")
@@ -94,3 +95,6 @@ map("n", "<C-t>", ":ToggleTerm size=17<CR>")
 -- record macro in <F5>
 map("n", "<F5>", "@q")
 map("v", "<F5>", ":norm @q<CR>")
+
+-- switch with terminal
+--map("n", "<Tab>", "<C-w>w")
