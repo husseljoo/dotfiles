@@ -17,7 +17,7 @@ return require("packer").startup(function(use)
 		"jose-elias-alvarez/null-ls.nvim",
 		requires = { "nvim-lua/plenary.nvim" },
 	})
-	use({
+use({
 		"jay-babu/mason-null-ls.nvim",
 		requires = {
 			"williamboman/mason.nvim",
@@ -64,24 +64,11 @@ return require("packer").startup(function(use)
 	use("EdenEast/nightfox.nvim")
 	use("xiyaowong/transparent.nvim")
 	use({
-		"iamcco/markdown-preview.nvim",
-		run = function()
-			vim.fn["mkdp#util#install"]()
-		end,
-	})
-	use({
 		"nvim-treesitter/nvim-treesitter",
 		run = function()
 			local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
 			ts_update()
 		end,
-	})
-	use({
-		"akinsho/flutter-tools.nvim",
-		requires = {
-			"nvim-lua/plenary.nvim",
-			"stevearc/dressing.nvim", -- optional for vim.ui.select
-		},
 	})
 	use({
 		"luukvbaal/nnn.nvim",
