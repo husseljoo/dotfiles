@@ -86,7 +86,7 @@ map("n", "<F1>", ":TransparentToggle<CR>")
 map("n", "<leader>g", ":LazyGit<CR>")
 
 -- toggle nvim-tree
-map("n", "<C-a>", ":NvimTreeToggle<CR>")
+map("n", "<leader>n", ":NvimTreeToggle<CR>")
 
 -- toggle terminal
 map("n", "<leader>t", ":ToggleTerm direction=float<CR>")
