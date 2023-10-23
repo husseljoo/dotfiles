@@ -1,3 +1,4 @@
+require("setup-packer")
 -- require("lsp_config")
 require("lsp-zero-config")
 require("core")
