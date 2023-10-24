@@ -12,7 +12,6 @@ lsp.setup()
 vim.diagnostic.config({
 	-- virtual_text = false,
 })
-
 local cmp = require("cmp")
 local cmp_action = require("lsp-zero").cmp_action()
 local signs = { Error = " ", Warn = " ", Hint = "", Info = "" }
@@ -28,7 +27,7 @@ cmp.setup({
 		["<S-Tab>"] = cmp_action.luasnip_shift_supertab(),
 	},
 	formatting = {
-		format = require("lspkind").cmp_format({ mode = "symbol", max_width=50, symbol_map = { Copilot = "" } }),
+		format = require("lspkind").cmp_format({ mode = "symbol", max_width = 50, symbol_map = { Copilot = "" } }),
 		maxwidth = 50, -- prevent the popup from showing more than provided characters
 		ellipsis_char = "...", --when maxwidth exceeded, truncated part shows ellipsis_char instead
 	},
@@ -85,7 +84,7 @@ null_ls.setup({
 })
 --use mason-null-ls.nvim to integrate mason and null-ls
 require("mason-null-ls").setup({
-	ensure_installed = nil,
+	ensure_installed = { "stylua", "lua-language-server" },
 	automatic_installation = true,
 })
 
@@ -93,20 +92,5 @@ require("nvim-treesitter.configs").setup({
 	highlight = {
 		enable = true,
 		additional_vim_regex_highlighting = false,
-	},
-})
-
--- require("lsp-colors").setup({
--- 	Error = "#db4b4b",
--- 	Warning = "#e0af68",
--- 	Information = "#0db9d7",
--- 	Hint = "#10B981",
--- })
-
-local dart_lsp = lsp.build_options("dartls", {})
-
-require("flutter-tools").setup({
-	lsp = {
-		capabilities = dart_lsp.capabilities,
 	},
 })
