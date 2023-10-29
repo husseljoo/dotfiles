@@ -113,9 +113,9 @@ myStartupHook = do
     -- uncomment to set a random wallpaper on login
     spawnOnce "find /usr/share/backgrounds/husseljo-wallpapers/ -type f | shuf -n 1 | xargs xwallpaper --stretch"
 
-    -- spawnOnce "firefox-developer-edition"
+    spawnOnce "firefox-developer-edition"
     spawnOnce "alacritty"
-    spawnOnce "toggle_windows"
+    -- spawnOnce "toggle_windows"
     -- make terminal at the left by promoting
 
     -- spawnOnce "~/.fehbg &"  -- set last saved feh wallpaper
@@ -378,8 +378,6 @@ myManageHook =
         , className =? "VirtualBox Manager" --> doShift (myWorkspaces !! 4)
         , (className =? "firefox" <&&> resource =? "Dialog") --> doFloat -- Float Firefox Dialog
         , isFullscreen --> doFullFloat
-        , className =? "Xmessage" --> doCenterFloat -- Float Xmessage windows
-        , appName =? "battery-low" --> doFloat -- Float low battery notification
         ]
         <+> namedScratchpadManageHook myScratchPads
 
@@ -488,7 +486,7 @@ myKeys =
       ("M-<F1>", spawn "find /usr/share/backgrounds/husseljo-wallpapers/ -type f | shuf -n 1 | xargs xwallpaper --stretch")
     , ("M-<F2>", spawn "toggle_allacritty_opacity")
     , ("M-<F3>", spawn "toggle_xmobar")
-    , ("M-<Page_Up>", spawn "gscreenshot -s -f ~/Pictures/screen_shots")
+    , ("M1-<Page_Up>", spawn "kazam --area")
     , -- , ("M-<F4>", sendMessage(T.Toggle "")) -- toggles to layout "tight"
 
       -- KB_GROUP Controls for mocp music player (SUPER-u followed by a key)
