@@ -486,7 +486,7 @@ myKeys =
       -- choose.  Or, type 'SUPER+F2' to set a random wallpaper.
       -- , ("M-<F1>", spawn "sxiv -r -q -t -o /usr/share/backgrounds/dtos-backgrounds/*")
       ("M-<F1>", spawn "find /usr/share/backgrounds/husseljo-wallpapers/ -type f | shuf -n 1 | xargs xwallpaper --stretch")
-    , ("M-<F2>", spawn "toggle_allacritty_opacity")
+    , ("M-<F2>", spawn "toggle_alacritty_opacity")
     , ("M-<F3>", spawn "toggle_xmobar")
     , ("M-<Page_Up>", spawn "gscreenshot -s -f ~/Pictures/screen_shots")
     , -- , ("M-<F4>", sendMessage(T.Toggle "")) -- toggles to layout "tight"

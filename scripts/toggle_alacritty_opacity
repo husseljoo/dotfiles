@@ -1,0 +1,10 @@
+#!/bin/bash
+
+CONFIG_FILE="$HOME/.config/alacritty/alacritty.yml"
+PATTERN='  opacity: 1.0'
+
+if grep -q "$PATTERN" "$CONFIG_FILE"; then
+    sed -i 's/  opacity: 1.0/  opacity: 0.7/g' "$CONFIG_FILE"
+else
+    sed -i 's/  opacity: 0.7/  opacity: 1.0/g' "$CONFIG_FILE"
+fi
