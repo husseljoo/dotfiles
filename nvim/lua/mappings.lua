@@ -92,8 +92,8 @@ map("n", "<leader>n", ":NvimTreeToggle<CR>")
 map("n", "<leader>t", ":ToggleTerm direction=float<CR>")
 map("n", "<C-t>", ":ToggleTerm size=17<CR>")
 
--- record macro in <F5>
-map("n", "<F5>", "@q")
+-- write qq to start recording
+map("n", "<F5>", "@q") -- replay macro in register q
 map("v", "<F5>", ":norm @q<CR>")
 
 -- switch with terminal
