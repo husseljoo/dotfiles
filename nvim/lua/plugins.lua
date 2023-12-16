@@ -115,7 +115,7 @@ return require("packer").startup(function(use)
 			require("toggleterm").setup()
 		end,
 	})
-	use("mfussenegger/nvim-jdtls")
+	use("christoomey/vim-tmux-navigator")
 	-- use({
 	-- 	"zbirenbaum/copilot.lua",
 	-- 	cmd = "Copilot",
