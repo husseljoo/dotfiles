@@ -1,10 +1,22 @@
 #!/bin/bash
 
-CONFIG_FILE="$HOME/.config/alacritty/alacritty.yml"
-PATTERN='  opacity: 1.0'
+CONFIG_FILE_YML="$HOME/.config/alacritty/alacritty.yml"
+PATTERN_YML='  opacity: 1.0'
 
-if grep -q "$PATTERN" "$CONFIG_FILE"; then
-    sed -i 's/  opacity: 1.0/  opacity: 0.7/g' "$CONFIG_FILE"
+CONFIG_FILE_TOML="$HOME/.config/alacritty/alacritty.toml"
+PATTERN_TOML='opacity = 1.0'
+
+if [ -e "$CONFIG_FILE_TOML" ]; then
+    if grep -q "$PATTERN_TOML" "$CONFIG_FILE_TOML"; then
+        sed -i 's/opacity = 1.0/opacity = 0.7/g' "$CONFIG_FILE_TOML"
+    else
+        sed -i 's/opacity = 0.7/opacity = 1.0/g' "$CONFIG_FILE_TOML"
+    fi
+    exit 0
 else
-    sed -i 's/  opacity: 0.7/  opacity: 1.0/g' "$CONFIG_FILE"
+    if grep -q "$PATTERN_YML" "$CONFIG_FILE_YML"; then
+        sed -i 's/  opacity: 1.0/  opacity: 0.7/g' "$CONFIG_FILE_YML"
+    else
+        sed -i 's/  opacity: 0.7/  opacity: 1.0/g' "$CONFIG_FILE_YML"
+    fi
 fi
