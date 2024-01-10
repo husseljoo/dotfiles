@@ -115,6 +115,7 @@ return require("packer").startup(function(use)
 			require("toggleterm").setup()
 		end,
 	})
+	use("hrsh7th/cmp-path")
 	use("christoomey/vim-tmux-navigator")
 	-- use({
 	-- 	"zbirenbaum/copilot.lua",
