@@ -11,7 +11,6 @@ map("x", "<C-j>", "<Esc>")
 map("c", "<C-j>", "<Esc>")
 map("o", "<C-j>", "<Esc>")
 map("l", "<C-j>", "<Esc>")
-map("t", "<C-j>", "<Esc>")
 map("i", "<C-k>", "<Esc>")
 map("n", "<C-k>", "<Esc>")
 map("i", "<C-k>", "<Esc>")
@@ -21,7 +20,9 @@ map("x", "<C-k>", "<Esc>")
 map("c", "<C-k>", "<Esc>")
 map("o", "<C-k>", "<Esc>")
 map("l", "<C-k>", "<Esc>")
-map("t", "<C-k>", "<Esc>")
+
+-- Tab for switching between buffers
+map("n", "<Tab>", "<C-w>w")
 
 --enter norm mode
 map("", "<C-n>", ":norm ")
@@ -88,6 +89,12 @@ map("n", "<leader>g", ":LazyGit<CR>")
 -- toggle nvim-tree
 map("n", "<leader>n", ":NvimTreeToggle<CR>")
 
+-- terminal mode mappings
+map("t", "<C-j>", "<C-\\><C-n>") -- regular escape
+map("t", "<leader><Tab>", "<C-\\><C-n><C-w>w")
+map("t", "<C-w>", "<C-\\><C-n><C-w>")
+vim.cmd("autocmd BufWinEnter,WinEnter,BufEnter term://* startinsert")
+
 -- toggle terminal
 map("n", "<leader>t", ":ToggleTerm direction=float<CR>")
 map("n", "<C-t>", ":ToggleTerm size=17<CR>")
@@ -95,6 +102,3 @@ map("n", "<C-t>", ":ToggleTerm size=17<CR>")
 -- write qq to start recording
 map("n", "<F5>", "@q") -- replay macro in register q
 map("v", "<F5>", ":norm @q<CR>")
-
--- switch with terminal
---map("n", "<Tab>", "<C-w>w")
