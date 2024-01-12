@@ -32,10 +32,10 @@ cmp.setup({
 		ellipsis_char = "...", --when maxwidth exceeded, truncated part shows ellipsis_char instead
 	},
 	sources = {
-		{ name = "copilot" },
 		{ name = "nvim_lsp" },
 		{ name = "path" },
 		{ name = "buffer" },
+		{ name = "copilot" },
 	},
 })
 
