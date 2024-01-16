@@ -79,6 +79,7 @@ map("n", "Y", "y$")
 map("n", "<C-P>", "<cmd>lua require('fzf-lua').files()<CR>")
 map("n", "<C-]>", ":Gitsigns toggle_signs<CR>")
 map("n", "<C-f>", ":FzfLua live_grep <CR>")
+map("n", "<C-b>", ":FzfLua buffers <CR>")
 
 --toggle transparency
 map("n", "<F1>", ":TransparentToggle<CR>")
