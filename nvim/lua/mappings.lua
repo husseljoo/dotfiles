@@ -93,3 +93,19 @@ map("n", "<leader>n", ":NvimTreeToggle<CR>")
 -- write qq to start recording
 map("n", "<F5>", "@q") -- replay macro in register q
 map("v", "<F5>", ":norm @q<CR>")
+
+-- obsidian mappings
+local home_path = vim.fn.expand("$HOME")
+local vault_path = home_path .. "/obsidian/"
+vim.api.nvim_create_autocmd({ "BufReadPre", "FileReadPre" }, {
+	pattern = { vault_path .. "*" },
+	callback = function()
+		local buffer_name = vim.fn.expand("%:p")
+		local workspace = buffer_name:match(vault_path .. "(.-)/")
+		vim.cmd(string.format("ObsidianWorkspace %s", workspace))
+		map("n", "<leader>o", ":ObsidianOpen<CR>")
+		map("n", "<leader>pi", ":ObsidianPasteImg<CR>")
+		map("n", "<C-f>", ":ObsidianSearch<CR>")
+		map("n", "<C-n>", ":ObsidianNew<CR>")
+	end,
+})
