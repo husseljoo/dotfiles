@@ -137,6 +137,12 @@ return require("packer").startup(function(use)
 			require("copilot_cmp").setup()
 		end,
 	})
+	use({
+		"epwalsh/obsidian.nvim",
+		tag = "*", -- use latest release instead of latest commit
+		requires = { "nvim-lua/plenary.nvim" },
+		config = require("obsidian_config"),
+	})
 
 	-- Automatically set up configuration after cloning packer.nvim
 	if packer_bootstrap then
