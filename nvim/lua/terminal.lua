@@ -1,3 +1,4 @@
+map = require("utils").map
 -- terminal mode mappings
 -- map("t", "<C-w>", "<C-\\><C-n><C-w>") --could be handy for unification, however I rely on C-w word delete too much
 -- map("t", "<C-j>", "<C-\\><C-n>") -- regular escape
