@@ -118,6 +118,12 @@ return require("packer").startup(function(use)
 	use("hrsh7th/cmp-path")
 	use("hrsh7th/cmp-buffer")
 	use("christoomey/vim-tmux-navigator")
+	use({
+		"m4xshen/autoclose.nvim",
+		config = function()
+			require("autoclose").setup()
+		end,
+	})
 	-- add copilot
 	use({
 		"zbirenbaum/copilot.lua",
