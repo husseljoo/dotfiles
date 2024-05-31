@@ -6,6 +6,12 @@ end)
 
 -- (Optional) Configure lua language server for neovim
 require("lspconfig").lua_ls.setup(lsp.nvim_lua_ls())
+require("lspconfig").clangd.setup({
+	cmd = {
+		"clangd",
+		"--offset-encoding=utf-16",
+	},
+})
 
 lsp.setup()
 
@@ -61,6 +67,7 @@ lsp.format_on_save({
 			"json",
 			"dart",
 			"cpp",
+			"ruby",
 		},
 	},
 })
@@ -71,7 +78,9 @@ null_ls.setup({
 	sources = {
 		-- formatting
 		null_ls.builtins.formatting.prettier,
-		null_ls.builtins.formatting.black,
+		null_ls.builtins.formatting.black.with({
+			extra_args = { "--line-length=150" },
+		}),
 		null_ls.builtins.formatting.shfmt,
 		null_ls.builtins.formatting.goimports,
 		null_ls.builtins.formatting.stylua,
@@ -80,6 +89,7 @@ null_ls.setup({
 		null_ls.builtins.formatting.fourmolu,
 		null_ls.builtins.formatting.clang_format,
 		null_ls.builtins.formatting.dart_format,
+		null_ls.builtins.formatting.rufo,
 		-- linting
 		-- null_ls.builtins.diagnostics.flake8,
 	},
