@@ -1,3 +1,4 @@
+vim.g.mapleader = " "
 require("plugins")
 -- require("lsp_config")
 require("lsp-zero-config")
