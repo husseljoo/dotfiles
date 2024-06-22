@@ -2,12 +2,24 @@ local config = function()
 	require("obsidian").setup({
 		workspaces = {
 			{
+				name = "orange",
+				path = "~/obsidian/orange",
+			},
+			{
 				name = "work",
 				path = "~/obsidian/work",
 			},
 			{
 				name = "startup",
 				path = "~/obsidian/startup",
+			},
+			{
+				name = "learning",
+				path = "~/obsidian/learning",
+			},
+			{
+				name = "general-knowledge",
+				path = "~/obsidian/general-knowledge/",
 			},
 		},
 

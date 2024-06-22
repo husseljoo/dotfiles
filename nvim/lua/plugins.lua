@@ -117,13 +117,13 @@ return require("packer").startup(function(use)
 	})
 	use("hrsh7th/cmp-path")
 	use("hrsh7th/cmp-buffer")
-	use("christoomey/vim-tmux-navigator")
 	use({
 		"m4xshen/autoclose.nvim",
 		config = function()
 			require("autoclose").setup()
 		end,
 	})
+	-- use("christoomey/vim-tmux-navigator")
 	-- add copilot
 	use({
 		"zbirenbaum/copilot.lua",
@@ -143,12 +143,12 @@ return require("packer").startup(function(use)
 			require("copilot_cmp").setup()
 		end,
 	})
-	use({
-		"epwalsh/obsidian.nvim",
-		tag = "*", -- use latest release instead of latest commit
-		requires = { "nvim-lua/plenary.nvim" },
-		config = require("obsidian_config"),
-	})
+	-- use({
+	-- 	"epwalsh/obsidian.nvim",
+	-- 	tag = "*", -- use latest release instead of latest commit
+	-- 	requires = { "nvim-lua/plenary.nvim" },
+	-- 	config = require("obsidian_config"),
+	-- })
 
 	-- Automatically set up configuration after cloning packer.nvim
 	if packer_bootstrap then
