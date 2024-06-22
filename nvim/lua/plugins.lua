@@ -1,48 +1,40 @@
-local vim = vim
-local execute = vim.api.nvim_command
-local fn = vim.fn
--- ensure that packer is installed
-local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-if fn.empty(fn.glob(install_path)) > 0 then
-	packer_bootstrap = true
-	execute("!git clone https://github.com/wbthomason/packer.nvim " .. install_path)
-	execute("packadd packer.nvim")
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+	vim.fn.system({
+		"git",
+		"clone",
+		"--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git",
+		"--branch=stable", -- latest stable release
+		lazypath,
+	})
 end
-vim.cmd("packadd packer.nvim")
-local packer = require("packer")
-local util = require("packer.util")
-packer.init({
-	package_root = util.join_paths(vim.fn.stdpath("data"), "site", "pack"),
-})
+vim.opt.rtp:prepend(lazypath)
 
-return require("packer").startup(function(use)
-	use("wbthomason/packer.nvim")
-	use("neovim/nvim-lspconfig")
-	use("hrsh7th/nvim-cmp")
-	use("hrsh7th/cmp-nvim-lsp")
-	use("onsails/lspkind.nvim")
-	use("L3MON4D3/LuaSnip")
-	use("nvim-lua/plenary.nvim")
-	use({
+return require("lazy").setup({
+	"neovim/nvim-lspconfig",
+	"hrsh7th/nvim-cmp",
+	"hrsh7th/cmp-nvim-lsp",
+	"onsails/lspkind.nvim",
+	"L3MON4D3/LuaSnip",
+	"nvim-lua/plenary.nvim",
+	{
 		"jose-elias-alvarez/null-ls.nvim",
-		requires = { "nvim-lua/plenary.nvim" },
-	})
-	use({
+		dependencies = { "nvim-lua/plenary.nvim" },
+	},
+	{
 		"jay-babu/mason-null-ls.nvim",
-		requires = {
-			"williamboman/mason.nvim",
-			"jose-elias-alvarez/null-ls.nvim",
-		},
-	})
-	use({
+		dependencies = { "williamboman/mason.nvim", "jose-elias-alvarez/null-ls.nvim" },
+	},
+	{
 		"VonHeikemen/lsp-zero.nvim",
 		branch = "v2.x",
-		requires = {
+		dependencies = {
 			-- LSP Support
 			{ "neovim/nvim-lspconfig" }, -- Required
 			{ -- Optional
 				"williamboman/mason.nvim",
-				run = function()
+				build = function()
 					pcall(vim.cmd, "MasonUpdate")
 				end,
 			},
@@ -53,79 +45,79 @@ return require("packer").startup(function(use)
 			{ "hrsh7th/cmp-nvim-lsp" }, -- Required
 			{ "L3MON4D3/LuaSnip" }, -- Required
 		},
-	})
-	use({
+	},
+	{
 		"williamboman/mason.nvim",
-		run = ":MasonUpdate", -- :MasonUpdate updates registry contents
-	})
-	use("williamboman/mason-lspconfig.nvim")
-	use("kyazdani42/nvim-web-devicons")
-	use("machakann/vim-highlightedyank")
-	use("vim-airline/vim-airline")
-	use("vim-airline/vim-airline-themes")
-	use("tpope/vim-commentary")
-	use("junegunn/fzf.vim")
-	use({
+		build = ":MasonUpdate",
+	},
+	"williamboman/mason-lspconfig.nvim",
+	"kyazdani42/nvim-web-devicons",
+	"machakann/vim-highlightedyank",
+	"vim-airline/vim-airline",
+	"vim-airline/vim-airline-themes",
+	"tpope/vim-commentary",
+	"junegunn/fzf.vim",
+	{
 		"ibhagwan/fzf-lua",
-		requires = { "nvim-tree/nvim-web-devicons" },
-	})
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+	},
 	--colorscheme plugins
-	use("ellisonleao/gruvbox.nvim")
-	use("EdenEast/nightfox.nvim")
-	use("xiyaowong/transparent.nvim")
-	use({
+	"ellisonleao/gruvbox.nvim",
+	"EdenEast/nightfox.nvim",
+	"xiyaowong/transparent.nvim",
+	{
 		"nvim-treesitter/nvim-treesitter",
-		run = function()
+		build = function()
 			local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
 			ts_update()
 		end,
-	})
-	use({
+	},
+	{
 		"luukvbaal/nnn.nvim",
 		config = function()
 			require("nnn").setup()
 		end,
-	})
-	use({
+	},
+	{
 		"kdheepak/lazygit.nvim",
-		requires = {
+		dependencies = {
 			"nvim-lua/plenary.nvim",
 		},
-	})
-	use({
+	},
+	{
 		"kyazdani42/nvim-tree.lua",
-		requires = {
+		dependencies = {
 			"kyazdani42/nvim-web-devicons",
 		},
 		config = function()
 			require("nvim-tree").setup()
 		end,
-	})
-	use({
+	},
+	{
 		"lewis6991/gitsigns.nvim",
 		config = function()
 			require("gitsigns").setup()
 		end,
-	})
-	use("romgrk/barbar.nvim")
-	use({
+	},
+	"romgrk/barbar.nvim",
+	{
 		"akinsho/toggleterm.nvim",
-		tag = "*",
+		version = "*",
 		config = function()
 			require("toggleterm").setup()
 		end,
-	})
-	use("hrsh7th/cmp-path")
-	use("hrsh7th/cmp-buffer")
-	use({
+	},
+	"hrsh7th/cmp-path",
+	"hrsh7th/cmp-buffer",
+	{
 		"m4xshen/autoclose.nvim",
 		config = function()
 			require("autoclose").setup()
 		end,
-	})
-	-- use("christoomey/vim-tmux-navigator")
+	},
+	-- "christoomey/vim-tmux-navigator",
 	-- add copilot
-	use({
+	{
 		"zbirenbaum/copilot.lua",
 		cmd = "Copilot",
 		event = "InsertEnter",
@@ -135,23 +127,18 @@ return require("packer").startup(function(use)
 				panel = { enabled = false },
 			})
 		end,
-	})
-	use({
+	},
+	{
 		"zbirenbaum/copilot-cmp",
-		after = { "copilot.lua" },
+		dependencies = { "copilot.lua" },
 		config = function()
 			require("copilot_cmp").setup()
 		end,
-	})
-	-- use({
+	},
+	-- {
 	-- 	"epwalsh/obsidian.nvim",
-	-- 	tag = "*", -- use latest release instead of latest commit
-	-- 	requires = { "nvim-lua/plenary.nvim" },
+	-- 	version = "*", -- use latest release instead of latest commit
+	-- 	dependencies = { "nvim-lua/plenary.nvim" },
 	-- 	config = require("obsidian_config"),
-	-- })
-
-	-- Automatically set up configuration after cloning packer.nvim
-	if packer_bootstrap then
-		require("packer").sync()
-	end
-end)
+	-- },
+})
