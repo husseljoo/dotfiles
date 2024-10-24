@@ -1,4 +1,3 @@
-live_config_reload = true
 
 [[colors.indexed_colors]]
 color = "0xf78c6c"
@@ -56,7 +55,7 @@ foreground = "0xeeffff"
 TERM = "alacritty"
 
 [font]
-size = 9
+size = 11
 
 [font.bold]
 family = "Source Code Pro"
@@ -91,3 +90,6 @@ opacity = 1.0
 [window.padding]
 x = 25
 y = 25
+
+[general]
+live_config_reload = true
