@@ -1,12 +1,11 @@
 #!/bin/bash
 
-FILE="xmobarrc"
-FILE2="xmobarrcX"
+XMOBAR_CONFIG="$HOME/.xmonad/xmobar.config"
 
-if [ -e ~/.config/xmobar/"$FILE" ]; then
-  mv ~/.config/xmobar/xmobarrc ~/.config/xmobar/xmobarrcX
-  xmonad --recompile && xmonad --restart
-elif [ -e ~/.config/xmobar/"$FILE2" ]; then
-  mv ~/.config/xmobar/xmobarrcX ~/.config/xmobar/xmobarrc
-  xmonad --recompile && xmonad --restart
+if pgrep -x "xmobar" > /dev/null; then
+    echo "xmobar is running. Killing it"
+    pkill -x "xmobar"
+else
+    echo "restarting xmobar."
+    xmobar "$XMOBAR_CONFIG" & disown
 fi
