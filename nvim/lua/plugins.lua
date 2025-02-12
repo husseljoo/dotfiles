@@ -109,32 +109,32 @@ return require("lazy").setup({
 	},
 	"hrsh7th/cmp-path",
 	"hrsh7th/cmp-buffer",
-	{
-		"m4xshen/autoclose.nvim",
-		config = function()
-			require("autoclose").setup()
-		end,
-	},
+	-- {
+	-- 	"m4xshen/autoclose.nvim",
+	-- 	config = function()
+	-- 		require("autoclose").setup()
+	-- 	end,
+	-- },
 	-- "christoomey/vim-tmux-navigator",
 	-- add copilot
-	{
-		"zbirenbaum/copilot.lua",
-		cmd = "Copilot",
-		event = "InsertEnter",
-		config = function()
-			require("copilot").setup({
-				suggestion = { enabled = false },
-				panel = { enabled = false },
-			})
-		end,
-	},
-	{
-		"zbirenbaum/copilot-cmp",
-		dependencies = { "copilot.lua" },
-		config = function()
-			require("copilot_cmp").setup()
-		end,
-	},
+	-- {
+	-- 	"zbirenbaum/copilot.lua",
+	-- 	cmd = "Copilot",
+	-- 	event = "InsertEnter",
+	-- 	config = function()
+	-- 		require("copilot").setup({
+	-- 			suggestion = { enabled = false },
+	-- 			panel = { enabled = false },
+	-- 		})
+	-- 	end,
+	-- },
+	-- {
+	-- 	"zbirenbaum/copilot-cmp",
+	-- 	dependencies = { "copilot.lua" },
+	-- 	config = function()
+	-- 		require("copilot_cmp").setup()
+	-- 	end,
+	-- },
 	-- {
 	-- 	"epwalsh/obsidian.nvim",
 	-- 	version = "*", -- use latest release instead of latest commit
