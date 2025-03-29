@@ -109,12 +109,50 @@ return require("lazy").setup({
 	},
 	"hrsh7th/cmp-path",
 	"hrsh7th/cmp-buffer",
+    { 'glacambre/firenvim', build = ":call firenvim#install(0)" },
+    {
+      "christoomey/vim-tmux-navigator",
+      cmd = {
+        "TmuxNavigateLeft",
+        "TmuxNavigateDown",
+        "TmuxNavigateUp",
+        "TmuxNavigateRight",
+        "TmuxNavigatePrevious",
+      },
+      keys = {
+        { "<c-q>", "<cmd>TmuxNavigateLeft<cr>" },
+        { "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
+        { "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
+        -- { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
+        { "<c-o>", "<cmd>TmuxNavigatePrevious<cr>" },
+      },
+    },
+    {
+    'cameron-wags/rainbow_csv.nvim',
+    config = true,
+    ft = {
+        'csv',
+        'tsv',
+        'csv_semicolon',
+        'csv_whitespace',
+        'csv_pipe',
+        'rfc_csv',
+        'rfc_semicolon'
+    },
+    cmd = {
+        'RainbowDelim',
+        'RainbowDelimSimple',
+        'RainbowDelimQuoted',
+        'RainbowMultiDelim'
+    }
+}
 	-- {
 	-- 	"m4xshen/autoclose.nvim",
 	-- 	config = function()
 	-- 		require("autoclose").setup()
 	-- 	end,
 	-- },
+    --
 	-- "christoomey/vim-tmux-navigator",
 	-- add copilot
 	-- {
