@@ -3,11 +3,11 @@ return {
   config = function()
     require("gitsigns").setup()
   end,
-  keys = {
-    {
-      "<C-]>",
-      "<cmd>Gitsigns toggle_signs<cr>",
-      desc = "Toggle Gitsigns",
-    },
-  },
+  -- keys = {
+  --   {
+  --     "<C-]>",
+  --     "<cmd>Gitsigns toggle_signs<cr>",
+  --     desc = "Toggle Gitsigns",
+  --   },
+  -- },
 }
