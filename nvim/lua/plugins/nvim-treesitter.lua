@@ -17,7 +17,7 @@ return {
           init_selection = "<Enter>", --false
           node_incremental = "<Enter>", -- false
           scope_incremental = false,
-          node_decremental = false, -- "<Backspace>"
+          node_decremental = "<Backspace>", -- false
         },
       },
     })
