@@ -46,7 +46,7 @@ map("n", "\\<Space>", ":noh<CR>")
 map("n", "<leader>v", ":vsplit ")
 
 --do custom mapping for F4
-map("", "<leader>m", ":map <F4> ")
+-- map("", "<leader>m", ":map <F4> ")
 -- map("", "<C-m>", ":map <F4> ")
 
 --Ctrl+h to stop searching
@@ -79,7 +79,7 @@ map("n", "<leader><Space>", ":b#<CR>")
 --map('n', '<leader>e', ':e <C-R>=expand("%:p:h") . "/" <CR>')
 map("n", "Y", "y$")
 
--- map("n", "<C-]>", ":Gitsigns toggle_signs<CR>")
+map("n", "<C-]>", ":Gitsigns toggle_signs<CR>")
 --fuzzy finder
 -- map("n", "<C-P>", "<cmd>lua require('fzf-lua').files()<CR>")
 -- map("n", "<C-f>", ":FzfLua live_grep <CR>")
@@ -115,23 +115,21 @@ map("n", "g#", "g#zz")
 vim.keymap.set({ "n", "x", "o" }, "H", "^")
 vim.keymap.set({ "n", "x", "o" }, "L", "g_")
 
--- obsidian mappings
-local home_path = vim.fn.expand("$HOME")
--- local vault_path = home_path .. "/obsidian/"
--- vim.api.nvim_create_autocmd({ "BufReadPre", "FileReadPre" }, {
--- 	pattern = { vault_path .. "*" },
--- 	callback = function()
--- 		local buffer_name = vim.fn.expand("%:p")
--- 		local workspace = buffer_name:match(vault_path .. "(.-)/")
--- 		vim.cmd(string.format("ObsidianWorkspace %s", workspace))
--- 		-- vim.cmd(string.format("ObsidianOpen"))
--- 		vim.cmd(string.format("Gitsigns toggle_signs"))
--- 		map("n", "<leader>o", ":ObsidianOpen<CR>")
--- 		map("n", "<leader>pi", ":ObsidianPasteImg<CR>")
--- 		map("n", "<leader>f", ":ObsidianFollowLink<CR>")
--- 		map("n", "<C-f>", ":ObsidianSearch<CR>")
--- 		map("n", "<C-n>", ":ObsidianNew<CR>")
--- 		-- map("v", "<C-b>", ":s/^/**/ | s/$/**/<CR>")
--- 		-- map("n", "<C-b>", ":s/^/**/ | s/$/**/<CR>")
--- 	end,
--- })
+-- SPELLING
+-- switch spelling to deutsch
+vim.keymap.set("n", "<leader>msd", function()
+  vim.opt.spelllang = "de"
+  vim.cmd("echo 'Spell language set to Deutsch'")
+end, { desc = "[P]Spelling language Deutsch" })
+
+-- switch spelling to english
+vim.keymap.set("n", "<leader>mse", function()
+  vim.opt.spelllang = "en"
+  vim.cmd("echo 'Spell language set to English'")
+end, { desc = "[P]Spelling language English" })
+
+-- switch spelling to deutsch and english
+vim.keymap.set("n", "<leader>msa", function()
+  vim.opt.spelllang = "en,de"
+  vim.cmd("echo 'Spell language set to Deutsch and English'")
+end, { desc = "[P]Spelling language Deutsch and English" })

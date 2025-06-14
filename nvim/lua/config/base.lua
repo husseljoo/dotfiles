@@ -14,3 +14,4 @@ set.undofile = true
 set.undodir = vim.fn.expand("~/.nvim/undofiles")
 set.conceallevel = 2
 -- set.cmdheight = 0
+vim.opt.spelllang = { "en" }
