@@ -1,0 +1,53 @@
+[general]
+fullscreen = true
+early-exit = true
+initial-tool = "rectangle"
+copy-command = "wl-copy"
+
+default-hide-toolbars = false
+disable-notifications = false
+
+save-after-copy = false
+actions-on-right-click = []
+actions-on-enter = ["save-to-file", "save-to-clipboard"]
+actions-on-escape = ["exit"]
+
+annotation-size-factor = 1.0
+
+[color-palette]
+# These will be shown in the toolbar for quick selection
+palette = [
+    "#8b0000",
+    "#00ffff",
+    "#ff1493",
+    "#ffd700",
+    "#008000",
+]
+
+# Leave empty to use GTK's default
+custom = [
+    # "#00ffff",
+    # "#a52a2a",
+    # "#dc143c",
+    # "#ff1493",
+    # "#ffd700",
+    # "#008000",
+]
+
+# Tool selection keyboard shortcuts (since 0.20.0)
+[keybinds]
+pointer = "p"
+crop = "c"
+brush = "b"
+line = "i"
+arrow = "a"
+rectangle = "r"
+ellipse = "e"
+text = "t"
+marker = "m"
+blur = "u"
+highlight = "g"
+
+[font]
+family = "Roboto"
+style = "Regular"
