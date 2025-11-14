@@ -12,6 +12,6 @@ vim.api.nvim_set_hl(0, "SignColumn", { clear })
 set.splitright = true
 set.undofile = true
 set.undodir = vim.fn.expand("~/.nvim/undofiles")
-set.conceallevel = 2
+set.conceallevel = 1
 -- set.cmdheight = 0
 vim.opt.spelllang = { "en" }

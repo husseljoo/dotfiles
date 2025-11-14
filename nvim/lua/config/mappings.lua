@@ -69,6 +69,8 @@ map("n", "<right>", "<nop>")
 --integrate with barabar.nvim
 map("n", "<right>", ":BufferNext<CR>")
 map("n", "<left>", ":BufferPrevious<CR>")
+map("n", "<C-S-n>", ":BufferNext<CR>", { noremap = true, silent = true })
+map("n", "<C-S-p>", ":BufferPrevious<CR>", { noremap = true, silent = true })
 map("n", "<leader>x", ":BufferClose<CR>")
 
 --toggle between 2 buffers
@@ -133,3 +135,33 @@ vim.keymap.set("n", "<leader>msa", function()
   vim.opt.spelllang = "en,de"
   vim.cmd("echo 'Spell language set to Deutsch and English'")
 end, { desc = "[P]Spelling language Deutsch and English" })
+
+vim.keymap.set("n", "<leader>msx", function()
+  vim.opt.spelllang = ""
+  vim.cmd("echo 'Spellchecking disabled'")
+end, { desc = "[Spell] Off" })
+
+-- QUICKFIX
+vim.api.nvim_set_hl(0, "QuickFixLine", { bg = "#3a3a3a", fg = "#ffffff", bold = true })
+
+function ToggleQuickfix()
+  for _, win in ipairs(vim.fn.getwininfo()) do
+    if win.quickfix == 1 then
+      vim.cmd("cclose")
+      return
+    end
+  end
+  vim.cmd("copen")
+end
+
+vim.api.nvim_create_user_command("ToggleQuickfix", ToggleQuickfix, {
+  desc = "Toggle the Quickfix list.",
+  bang = true,
+})
+vim.keymap.set("n", "<C-t>", ToggleQuickfix)
+vim.keymap.set("n", "<leader>j", "<cmd>cnext<cr>")
+vim.keymap.set("n", "<leader>k", "<cmd>cprev<cr>")
+vim.keymap.set("n", "<leader>tq", "<cmd>cdo execute 'norm! @q' | update<cr>")
+vim.keymap.set("n", "<leader>tc", ":cdo ")
+-- vim.keymap.set("n", "<X>", ToggleQuickfix)
+-- you can add a mapping: colder and cnewer

@@ -53,3 +53,12 @@ vim.api.nvim_create_autocmd("FileType", {
     end)
   end,
 })
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "dart", "typescript", "typescriptreact", "javascript", "javascriptreact" },
+  callback = function()
+    vim.bo.tabstop = 2 -- number of visual spaces per TAB
+    vim.bo.shiftwidth = 2 -- spaces used for autoindent
+    vim.bo.expandtab = true -- convert tabs to spaces
+  end,
+})

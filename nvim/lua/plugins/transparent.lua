@@ -1,10 +1,5 @@
 return {
+  -- enabled = false,
   "xiyaowong/transparent.nvim",
-  -- keys = {
-  --   {
-  --     "<F1>",
-  --     "<cmd>TransparentToggle<cr>",
-  --     desc = "Toggle Transparency",
-  --   },
-  -- },
+  -- exclude_groups = { "QuickFixLine" },
 }
