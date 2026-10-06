@@ -58,10 +58,10 @@ map("n", "<leader>v", ":vsplit ")
 -- map("v", "<C-f>", ":sus<CR>")
 -- map("i", "<C-f>", ":sus<CR>")
 
-map("n", "<up>", "<nop>")
-map("n", "<down>", "<nop>")
-map("n", "<left>", "<nop>")
-map("n", "<right>", "<nop>")
+-- map("n", "<up>", "<nop>")
+-- map("n", "<down>", "<nop>")
+-- map("n", "<left>", "<nop>")
+-- map("n", "<right>", "<nop>")
 
 --left and right can switch buffers
 -- map("n", "<left>", ":bp<CR>")
@@ -165,3 +165,13 @@ vim.keymap.set("n", "<leader>tq", "<cmd>cdo execute 'norm! @q' | update<cr>")
 vim.keymap.set("n", "<leader>tc", ":cdo ")
 -- vim.keymap.set("n", "<X>", ToggleQuickfix)
 -- you can add a mapping: colder and cnewer
+
+vim.api.nvim_create_user_command("CopyFilePath", function()
+  vim.fn.setreg("+", vim.fn.expand("%:p"))
+  print("File path copied to clipboard!")
+end, { desc = "Copy current file path to clipboard" })
+
+vim.keymap.set("n", "<leader>y", function()
+  vim.fn.setreg("+", vim.fn.expand("%:p"))
+  print("File path copied to clipboard!")
+end, { noremap = true, silent = true, desc = "Copy file path to clipboard" })
